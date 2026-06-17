@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "api/**/*.js": {
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
+    { "source": "/api/auth/oauth", "destination": "/api/auth/oauth.js" }
+  ]
+}

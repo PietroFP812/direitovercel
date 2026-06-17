@@ -1,0 +1,24 @@
+Options -Indexes
+RewriteEngine On
+
+# ── Bloqueia arquivos sensíveis ───────────────────────────────────────────────
+<FilesMatch "\.(db|sql|env|log|ini|sh|bak)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Bloqueia scripts administrativos da raiz web
+<FilesMatch "^(setup|popular_topicos|popular_questoes|importar_cc)\.php$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# ── Roteamento ────────────────────────────────────────────────────────────────
+# Permite acesso direto a arquivos existentes
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# CORS preflight
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^ - [L]

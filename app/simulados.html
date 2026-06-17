@@ -1,0 +1,3117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulados — Lex Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d0f;
+    --surface: #141418;
+    --surface2: #1c1c22;
+    --border: #2a2a35;
+    --accent: #c9a84c;
+    --accent2: #e8c97a;
+    --text: #e8e6df;
+    --text2: #9a9890;
+    --text3: #5a5855;
+    --sidebar-w: 72px;
+    --red: #c94c4c;
+    --green: #4caa74;
+    --blue: #4c7ec9;
+  }
+  /* ── LIGHT THEME ── */
+  [data-theme="light"] {
+    --bg: #faf7f2;
+    --surface: #ffffff;
+    --surface2: #f0ece3;
+    --border: #ddd8cc;
+    --accent: #9a7420;
+    --accent2: #b8922a;
+    --text: #18160f;
+    --text2: #4a4640;
+    --text3: #8a8580;
+    --red: #9a2020;
+    --green: #1e6b3e;
+    --blue: #1a4f9a;
+  }
+
+  /* Light theme specific overrides */
+  [data-theme="light"] body { background: var(--bg); }
+
+  [data-theme="light"] .sidebar {
+    background: #ffffff;
+    border-right: 1px solid var(--border);
+    box-shadow: 2px 0 12px rgba(0,0,0,0.06);
+  }
+
+  [data-theme="light"] .nav-btn { color: #8a8580; }
+  [data-theme="light"] .nav-btn:hover,
+  [data-theme="light"] .nav-btn.active { background: #f0ece3; color: var(--accent); }
+
+  [data-theme="light"] .user-bar {
+    background: rgba(255,255,255,0.95);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+
+  [data-theme="light"] .class-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  [data-theme="light"] .class-card:hover {
+    box-shadow: 0 6px 24px rgba(154,116,32,0.15);
+    border-color: rgba(154,116,32,0.35);
+  }
+
+  [data-theme="light"] .topic-item {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+
+  [data-theme="light"] .subpage-panel {
+    background: #ffffff;
+    box-shadow: -8px 0 40px rgba(0,0,0,0.12);
+  }
+
+  [data-theme="light"] .notes-textarea {
+    background: #fffef9;
+    border-color: var(--border);
+    color: var(--text);
+    font-size: 15px;
+  }
+  [data-theme="light"] .notes-wrapper {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+
+  [data-theme="light"] .quiz-container {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  [data-theme="light"] .option-btn {
+    background: #faf7f2;
+    border-color: var(--border);
+    color: var(--text);
+  }
+  [data-theme="light"] .option-btn:hover { background: #f0ece3; border-color: var(--accent); }
+
+  [data-theme="light"] .vade-sidebar {
+    background: #ffffff;
+    border-right: 1px solid var(--border);
+    box-shadow: 2px 0 8px rgba(0,0,0,0.05);
+  }
+  [data-theme="light"] .vade-article:hover { background: rgba(154,116,32,0.04); }
+  [data-theme="light"] .vade-part-header { background: var(--bg); }
+  [data-theme="light"] .vade-art-nota {
+    background: rgba(154,116,32,0.07);
+    border-left-color: rgba(154,116,32,0.4);
+  }
+  [data-theme="light"] .vade-toc-link:hover { background: #f0ece3; }
+  [data-theme="light"] .vade-toc-link.active { background: rgba(154,116,32,0.08); }
+
+  [data-theme="light"] .page-header { border-bottom-color: var(--border); }
+  [data-theme="light"] .back-btn {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    color: var(--text2);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  [data-theme="light"] .back-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+  [data-theme="light"] .sp-table th { background: #f0ece3; }
+  [data-theme="light"] .sp-table td { border-color: var(--border); }
+  [data-theme="light"] .sp-highlight { background: rgba(154,116,32,0.07); border-color: rgba(154,116,32,0.3); }
+  [data-theme="light"] .sp-alert { background: rgba(154,32,32,0.06); }
+  [data-theme="light"] .sp-success { background: rgba(30,107,62,0.06); }
+
+  [data-theme="light"] .config-chip {
+    background: #f0ece3;
+    border-color: var(--border);
+    color: var(--text2);
+  }
+  [data-theme="light"] .config-chip.selected {
+    background: rgba(154,116,32,0.12);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* Theme toggle button */
+  .theme-btn {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text2);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .theme-btn:hover { color: var(--accent); border-color: var(--accent); background: rgba(201,168,76,0.08); }
+  .theme-btn svg { width: 15px; height: 15px; pointer-events: none; }
+
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { overflow-x: hidden; max-width: 100vw; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    min-height: 100vh;
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: var(--sidebar-w);
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    z-index: 100;
+  }
+
+  .sidebar-logo {
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 32px;
+  }
+
+  .sidebar-logo svg { width: 32px; height: 32px; }
+
+  .sidebar-nav { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+
+  .nav-btn {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text3);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .nav-btn:hover, .nav-btn.active {
+    background: var(--surface2);
+    border-color: var(--border);
+    color: var(--accent);
+  }
+
+  .nav-btn.active::before {
+    content: '';
+    position: absolute;
+    left: -1px; top: 50%; transform: translateY(-50%);
+    width: 3px; height: 24px;
+    background: var(--accent);
+    border-radius: 0 2px 2px 0;
+  }
+
+  .nav-btn svg { width: 22px; height: 22px; }
+
+  .nav-tooltip {
+    position: absolute;
+    left: 60px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    white-space: nowrap;
+    color: var(--text);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+  .nav-btn:hover .nav-tooltip { opacity: 1; }
+  .nav-btn:hover .nav-tooltip[data-alt] { font-size: 0; }
+  .nav-btn:hover .nav-tooltip[data-alt]::before { content: attr(data-alt); font-size: 11px; }
+
+  /* ── MAIN ── */
+  .main { margin-left: var(--sidebar-w); flex: 1; min-height: 100vh; overflow-x: hidden; max-width: calc(100vw - var(--sidebar-w)); }
+
+  /* ── PAGES ── */
+  .page { display: none; min-height: 100vh; }
+  .page.active { display: block; }
+
+  /* ── HOME ── */
+  .home {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    min-height: 100vh;
+    padding: 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .home::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 40%, rgba(201,168,76,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .home-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    opacity: 0.8;
+  }
+
+  .home h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(48px, 7vw, 96px);
+    font-weight: 900;
+    line-height: 0.95;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--text) 0%, var(--accent2) 50%, var(--text) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .home-sub {
+    font-family: 'Inter', sans-serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--text2);
+    margin-bottom: 60px;
+    max-width: 420px;
+    line-height: 1.7;
+  }
+
+  .home-actions { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+
+  .btn-primary, .btn-secondary {
+    padding: 16px 40px;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; font-weight: 700;
+    border-radius: 4px; cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 0.02em;
+  }
+
+  .btn-primary {
+    background: var(--accent); color: #0d0d0f;
+    border: 2px solid var(--accent);
+  }
+
+  .btn-primary:hover {
+    background: var(--accent2); border-color: var(--accent2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(201,168,76,0.3);
+  }
+
+  .btn-secondary {
+    background: transparent; color: var(--text);
+    border: 2px solid var(--border);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--accent); color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .home-ornament {
+    position: absolute;
+    font-family: 'Playfair Display', serif;
+    font-size: 320px; font-weight: 900;
+    color: rgba(201,168,76,0.02);
+    line-height: 1;
+    user-select: none; pointer-events: none;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    white-space: nowrap;
+  }
+
+  /* ── ESTUDAR ── */
+  .estudar-page { padding: 48px; }
+
+  .page-header {
+    margin-bottom: 48px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 32px;
+    display: flex; align-items: flex-end; justify-content: space-between;
+  }
+
+  .page-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px; font-weight: 900; line-height: 1;
+  }
+
+  .page-header p { color: var(--text2); font-style: italic; margin-top: 8px; font-size: 15px; }
+
+  .progress-info {
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--text3);
+  }
+
+  .progress-info span {
+    display: block;
+    font-size: 28px; color: var(--accent); font-weight: 500; margin-bottom: 4px;
+  }
+
+  .classes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+
+  .class-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px; padding: 24px;
+    cursor: pointer; transition: all 0.25s;
+    position: relative; overflow: hidden;
+  }
+
+  .class-card::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; width: 100%; height: 3px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    opacity: 0; transition: opacity 0.25s;
+  }
+
+  .class-card:hover {
+    border-color: rgba(201,168,76,0.3);
+    background: var(--surface2);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+  }
+
+  .class-card:hover::before { opacity: 1; }
+
+  .card-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--accent);
+    margin-bottom: 12px; opacity: 0.7;
+  }
+
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 700;
+    margin-bottom: 10px; line-height: 1.3;
+  }
+
+  .card-desc { font-size: 15px; color: var(--text2); line-height: 1.6; font-style: italic; margin-bottom: 16px; }
+
+  .card-topics { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .topic-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; padding: 3px 8px;
+    background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 3px; color: var(--text2);
+  }
+
+  /* ── TOPIC DETAIL ── */
+  .topic-page { padding: 48px; }
+
+  .back-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--text3);
+    background: none; border: none; cursor: pointer;
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 40px; transition: color 0.2s;
+  }
+
+  .back-btn:hover { color: var(--accent); }
+
+  .topic-header { margin-bottom: 48px; }
+
+  .topic-header .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--accent); margin-bottom: 8px;
+  }
+
+  .topic-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 52px; font-weight: 900; line-height: 1; margin-bottom: 12px;
+  }
+
+  .topic-header p { font-style: italic; color: var(--text2); max-width: 600px; line-height: 1.7; }
+
+  .topics-list { display: flex; flex-direction: column; gap: 16px; max-width: 800px; }
+
+  .topic-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden;
+  }
+
+  .topic-item-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px; cursor: pointer; transition: background 0.2s;
+  }
+
+  .topic-item-header:hover { background: var(--surface2); }
+
+  .topic-item-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 19px; font-weight: 700;
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  .topic-item-title .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%; background: var(--accent); flex-shrink: 0;
+  }
+
+  .chevron { color: var(--text3); transition: transform 0.25s; flex-shrink: 0; }
+  .topic-item.open .chevron { transform: rotate(180deg); }
+
+  .topic-item-body {
+    display: none;
+    padding: 0 24px 24px;
+    border-top: 1px solid var(--border);
+    animation: fadeIn 0.25s ease;
+  }
+
+  .topic-item.open .topic-item-body { display: block; }
+
+  @keyframes fadeIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+
+  .topic-item-body p { color: var(--text2); line-height: 1.8; font-size: 14px; margin-top: 16px; }
+
+  .topic-item-body ul { margin-top: 12px; padding-left: 20px; }
+
+  .topic-item-body li {
+    color: var(--text2); font-size: 14px; line-height: 1.9;
+    list-style: none; position: relative; padding-left: 16px;
+  }
+
+  .topic-item-body li::before {
+    content: '§'; position: absolute; left: 0;
+    color: var(--accent); font-size: 12px;
+  }
+
+  .topic-item-body .highlight-box {
+    margin-top: 16px;
+    background: rgba(201,168,76,0.06);
+    border-left: 3px solid var(--accent);
+    padding: 12px 16px;
+    border-radius: 0 6px 6px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--accent2); line-height: 1.7;
+  }
+
+
+  /* ── TOPIC SUBPAGE OVERLAY ── */
+  .subpage-overlay {
+    position: fixed; inset: 0; z-index: 500;
+    display: flex; align-items: stretch;
+    pointer-events: none; opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+  .subpage-overlay.open { pointer-events: all; opacity: 1; }
+  .subpage-backdrop {
+    position: absolute; inset: 0;
+    background: rgba(5,5,8,0.78);
+    backdrop-filter: blur(5px);
+  }
+  .subpage-panel {
+    position: relative; margin-left: auto;
+    width: min(780px, 92vw); height: 100vh;
+    background: var(--surface); border-left: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    transform: translateX(60px);
+    transition: transform 0.38s cubic-bezier(0.22,1,0.36,1);
+    overflow: hidden;
+  }
+  .subpage-overlay.open .subpage-panel { transform: translateX(0); }
+  .subpage-topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 32px; border-bottom: 1px solid var(--border);
+    background: var(--surface2); flex-shrink: 0;
+  }
+  .subpage-topbar-left { display: flex; align-items: center; gap: 12px; }
+  .subpage-area-tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent);
+    background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 3px; padding: 4px 10px;
+  }
+  .subpage-close-btn {
+    width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--border);
+    background: transparent; color: var(--text3); cursor: pointer;
+    display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+  }
+  .subpage-close-btn:hover { background: var(--surface); color: var(--text); border-color: var(--text3); }
+  .subpage-body {
+    flex: 1; overflow-y: auto; padding: 40px 40px 60px; scroll-behavior: smooth; font-size: 15px;
+  }
+  .subpage-body::-webkit-scrollbar { width: 4px; }
+  .subpage-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  .subpage-hero {
+    margin-bottom: 40px; padding-bottom: 32px; border-bottom: 1px solid var(--border);
+  }
+  .subpage-hero h2 {
+    font-family: 'Playfair Display', serif; font-size: 34px; font-weight: 900;
+    line-height: 1.15; margin-bottom: 12px;
+  }
+  .subpage-hero p { font-size: 15px; color: var(--text2); font-style: italic; line-height: 1.7; }
+  .sp-section { margin-bottom: 36px; }
+  .sp-section-title {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent);
+    margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+  }
+  .sp-section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .sp-text { font-size: 14px; color: var(--text2); line-height: 1.9; margin-bottom: 14px; }
+  .sp-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .sp-list li { display: flex; gap: 14px; font-size: 14px; color: var(--text2); line-height: 1.8; }
+  .sp-list li .sp-bullet { color: var(--accent); font-size: 16px; flex-shrink: 0; margin-top: 1px; font-family: 'Playfair Display', serif; }
+  .sp-highlight {
+    background: rgba(201,168,76,0.06); border: 1px solid rgba(201,168,76,0.18);
+    border-radius: 6px; padding: 18px 20px; margin-bottom: 16px;
+  }
+  .sp-alert {
+    background: rgba(201,76,76,0.07); border: 1px solid rgba(201,76,76,0.2);
+    border-radius: 6px; padding: 16px 20px; margin-bottom: 16px;
+  }
+  .sp-success {
+    background: rgba(76,170,116,0.07); border: 1px solid rgba(76,170,116,0.2);
+    border-radius: 6px; padding: 16px 20px; margin-bottom: 16px;
+  }
+  .sp-box-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; display: block;
+  }
+  .sp-highlight .sp-box-label { color: var(--accent); }
+  .sp-alert .sp-box-label { color: var(--red); }
+  .sp-success .sp-box-label { color: var(--green); }
+  .sp-highlight p { font-size: 15px; color: var(--accent2); line-height: 1.8; }
+  .sp-alert p { font-size: 15px; color: #d98080; line-height: 1.8; }
+  .sp-success p { font-size: 15px; color: #7dc8a0; line-height: 1.8; }
+  .sp-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 14px; }
+  .sp-table th {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--accent); text-align: left;
+    padding: 10px 14px; border-bottom: 1px solid var(--border); background: var(--surface2);
+  }
+  .sp-table td {
+    padding: 10px 14px; border-bottom: 1px solid rgba(42,42,53,0.6);
+    color: var(--text2); line-height: 1.6; vertical-align: top;
+  }
+  .sp-table tr:last-child td { border-bottom: none; }
+  .sp-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .sp-tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .sp-tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 5px 12px;
+    background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 3px; color: var(--text2);
+  }
+  .subpage-nav {
+    display: flex; gap: 12px; padding: 14px 40px;
+    border-top: 1px solid var(--border); background: var(--surface2); flex-shrink: 0;
+  }
+  .sp-nav-btn {
+    flex: 1; padding: 10px 16px; background: transparent; border: 1px solid var(--border);
+    border-radius: 4px; color: var(--text3); font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; cursor: pointer; transition: all 0.2s; text-align: center;
+  }
+  .sp-nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .sp-nav-btn.disabled { opacity: 0.3; pointer-events: none; }
+  .topic-item-header .sp-open-hint {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--text3); margin-left: auto; margin-right: 12px;
+    letter-spacing: 0.05em; transition: color 0.2s;
+  }
+  .topic-item-header:hover .sp-open-hint { color: var(--accent); }
+
+  /* ── NOTES AREA ── */
+  .notes-wrapper {
+    max-width: 800px;
+    margin-top: 48px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+  }
+
+  .notes-top {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .notes-top-left {
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  .notes-top-left h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-weight: 700;
+  }
+
+  .notes-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent); opacity: 0.7;
+    background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 3px; padding: 3px 8px;
+  }
+
+  .notes-top-right { display: flex; align-items: center; gap: 10px; }
+
+  .notes-saved {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--green);
+    opacity: 0; transition: opacity 0.4s;
+  }
+
+  .notes-saved.show { opacity: 1; }
+
+  .notes-btn-clear {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; padding: 7px 14px;
+    background: transparent; color: var(--text3);
+    border: 1px solid var(--border);
+    border-radius: 4px; cursor: pointer; transition: all 0.2s;
+  }
+
+  .notes-btn-clear:hover { border-color: var(--red); color: var(--red); }
+
+  .notes-btn-save {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; padding: 7px 18px;
+    background: var(--accent); color: #0d0d0f;
+    border: none; border-radius: 4px;
+    cursor: pointer; font-weight: 500;
+    transition: all 0.2s;
+  }
+
+  .notes-btn-save:hover { background: var(--accent2); transform: translateY(-1px); }
+
+  .notes-textarea {
+    width: 100%; min-height: 160px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px; line-height: 1.8;
+    resize: vertical; outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .notes-textarea:focus { border-color: rgba(201,168,76,0.4); }
+
+  .notes-textarea::placeholder { color: var(--text3); font-style: italic; }
+
+  .notes-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 10px;
+  }
+
+  .notes-hint {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--text3);
+  }
+
+  .notes-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--text3);
+  }
+
+  /* ── SIMULADOS ── */
+  .simulados-page { padding: 48px; }
+
+  .quiz-container { max-width: 1080px; }
+
+  .quiz-layout {
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
+  }
+
+  .quiz-main {
+    flex: 1;
+    min-width: 0;
+    max-width: 660px;
+  }
+
+  .quiz-explanation-panel {
+    width: 340px;
+    flex-shrink: 0;
+    background: var(--surface);
+    border: 1px solid rgba(201,76,76,0.25);
+    border-radius: 12px;
+    padding: 24px;
+    display: none;
+    animation: slideInRight 0.25s ease;
+  }
+
+  .quiz-explanation-panel.show { display: block; }
+
+  @keyframes slideInRight {
+    from { opacity: 0; transform: translateX(16px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  .expl-header {
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--text3); margin-bottom: 16px;
+    padding-bottom: 12px; border-bottom: 1px solid var(--border);
+  }
+
+  .expl-header span { color: var(--red); font-size: 14px; }
+
+  .expl-correct {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 14px; color: var(--green);
+    background: rgba(76,170,116,0.08);
+    border: 1px solid rgba(76,170,116,0.2);
+    border-radius: 6px; padding: 12px 14px;
+    margin-bottom: 16px; line-height: 1.5;
+  }
+
+  .expl-correct-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--green);
+    opacity: 0.7; display: block; margin-bottom: 6px;
+  }
+
+  .expl-body {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 14px; color: var(--text2);
+    line-height: 1.75;
+  }
+
+  @media (max-width: 900px) {
+    .quiz-layout { flex-direction: column; }
+    .quiz-explanation-panel { width: 100%; }
+  }
+
+  .quiz-start {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 40px;
+  }
+
+  .quiz-start h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px; font-weight: 900; margin-bottom: 12px;
+  }
+
+  .quiz-start p { color: var(--text2); font-style: italic; margin-bottom: 32px; line-height: 1.7; }
+
+  .quiz-config { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 32px; }
+
+  .config-chip {
+    padding: 8px 16px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--text2);
+    cursor: pointer; transition: all 0.2s;
+  }
+
+  .config-chip.selected, .config-chip:hover {
+    border-color: var(--accent); color: var(--accent);
+    background: rgba(201,168,76,0.06);
+  }
+
+  #quiz-active { display: none; }
+
+  .quiz-progress-bar {
+    height: 3px; background: var(--surface2);
+    border-radius: 2px; margin-bottom: 32px; overflow: hidden;
+  }
+
+  .quiz-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 2px; transition: width 0.4s ease;
+  }
+
+  .quiz-top-row {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 16px;
+  }
+  .question-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--text3);
+  }
+  .quiz-timer {
+    display: flex; align-items: center; gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; color: var(--text2);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 12px;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  .quiz-timer.warn { color: var(--accent2); border-color: var(--accent); }
+  .quiz-timer-icon { font-size: 12px; }
+
+  .question-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 700;
+    line-height: 1.5; margin-bottom: 32px;
+  }
+
+  .options { display: flex; flex-direction: column; gap: 12px; }
+
+  .option {
+    padding: 16px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px; cursor: pointer;
+    transition: all 0.2s; font-size: 15px;
+    line-height: 1.5; text-align: left;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+  }
+
+  .option:hover:not(.disabled) {
+    border-color: var(--accent);
+    background: rgba(201,168,76,0.05);
+  }
+
+  .option.correct { border-color: var(--green); background: rgba(76,170,116,0.1); color: var(--green); }
+  .option.wrong { border-color: var(--red); background: rgba(201,76,76,0.1); color: var(--red); }
+  .option.disabled { cursor: default; }
+
+  .quiz-feedback {
+    margin-top: 20px; padding: 16px 20px;
+    border-radius: 6px; font-size: 14px;
+    line-height: 1.6; display: none;
+  }
+
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct-fb { background: rgba(76,170,116,0.1); border: 1px solid var(--green); color: var(--green); }
+  .quiz-feedback.wrong-fb { background: rgba(201,76,76,0.1); border: 1px solid var(--red); color: var(--red); }
+
+  .quiz-next-btn {
+    margin-top: 24px; padding: 14px 32px;
+    background: var(--accent); color: #0d0d0f;
+    border: none; border-radius: 4px;
+    font-family: 'Playfair Display', serif;
+    font-size: 16px; font-weight: 700;
+    cursor: pointer; display: none; transition: all 0.2s;
+  }
+
+  .quiz-next-btn.show { display: inline-block; }
+  .quiz-next-btn:hover { background: var(--accent2); }
+
+  .quiz-result {
+    display: none; text-align: center; padding: 40px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .quiz-result h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px; font-weight: 900; margin-bottom: 8px;
+  }
+
+  .score-big {
+    font-family: 'Playfair Display', serif;
+    font-size: 80px; font-weight: 900;
+    color: var(--accent); line-height: 1; margin: 24px 0;
+  }
+
+  .hist-section {
+    margin-top: 48px; padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+  .hist-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--text3);
+    text-transform: uppercase; letter-spacing: 0.12em;
+    margin-bottom: 16px;
+  }
+  .hist-table {
+    width: 100%; border-collapse: collapse; font-size: 13px;
+  }
+  .hist-table th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text3); text-align: left;
+    padding: 0 12px 10px; border-bottom: 1px solid var(--border);
+  }
+  .hist-table td {
+    padding: 12px; color: var(--text2);
+    border-bottom: 1px solid rgba(42,42,53,0.4);
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  }
+  .hist-table tr:last-child td { border-bottom: none; }
+  .hist-score {
+    font-weight: 700;
+    color: var(--green);
+  }
+  .hist-score.low { color: var(--red); }
+  .hist-score.mid { color: var(--accent); }
+
+  /* ── ANÁLISE DE DESEMPENHO ── */
+  .hist-stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .hist-stat-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 12px;
+    text-align: center;
+  }
+  .hist-stat-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .hist-stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .hist-area-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .hist-area-name {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text2);
+    font-size: 11px;
+    min-width: 170px;
+    max-width: 170px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .hist-area-bar-wrap {
+    flex: 1;
+    height: 5px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .hist-area-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: var(--accent);
+    transition: width 0.7s cubic-bezier(.4,0,.2,1);
+  }
+  .hist-area-pct {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    min-width: 34px;
+    text-align: right;
+  }
+  .hist-empty {
+    color: var(--text3);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding: 28px 0;
+    text-align: center;
+    line-height: 1.8;
+  }
+  @media (max-width: 520px) {
+    .hist-area-name { min-width: 110px; max-width: 110px; font-size: 10px; }
+    .hist-stat-num  { font-size: 20px; }
+  }
+  .hist-empty {
+    padding: 24px 0; color: var(--text3); font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── VADE MECUM BOOK ── */
+  .vade-layout {
+    display: flex; min-height: 100vh;
+  }
+  .vade-sidebar {
+    width: 280px; flex-shrink: 0;
+    background: var(--surface); border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    position: sticky; top: 0; height: 100vh; overflow: hidden;
+  }
+  .vade-sidebar-header {
+    padding: 28px 24px 16px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .vade-sidebar-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; font-weight: 900; color: var(--text);
+  }
+  .vade-sidebar-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--accent); margin-top: 4px; letter-spacing: 0.1em;
+  }
+  .vade-search-wrap {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 16px; border-bottom: 1px solid var(--border);
+    background: var(--surface2); flex-shrink: 0; color: var(--text3);
+  }
+  .vade-search-wrap input {
+    flex: 1; background: none; border: none; outline: none;
+    color: var(--text); font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+  .vade-search-wrap input::placeholder { color: var(--text3); }
+  .vade-toc {
+    flex: 1; overflow-y: auto; padding: 12px 0;
+  }
+  .vade-toc::-webkit-scrollbar { width: 3px; }
+  .vade-toc::-webkit-scrollbar-thumb { background: var(--border); }
+  .vade-toc-book {
+    padding: 0 0 8px;
+  }
+  .vade-toc-book-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent); padding: 10px 20px 6px; opacity: 0.8;
+  }
+  .vade-toc-link {
+    display: block; padding: 8px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--text3);
+    cursor: pointer; transition: all 0.15s;
+    border-left: 2px solid transparent;
+    text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .vade-toc-link:hover { color: var(--text); background: var(--surface2); }
+  .vade-toc-link.active { color: var(--accent); border-left-color: var(--accent); background: rgba(201,168,76,0.06); }
+  /* Book */
+  .vade-book {
+    flex: 1; overflow-y: auto; background: var(--bg);
+  }
+  .vade-book::-webkit-scrollbar { width: 5px; }
+  .vade-book::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  .vade-book-cover {
+    min-height: 60vh; display: flex; flex-direction: column;
+    justify-content: center; align-items: center; text-align: center;
+    padding: 80px 60px; border-bottom: 1px solid var(--border);
+    position: relative; overflow: hidden;
+  }
+  .vade-book-cover::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 40%, rgba(201,168,76,0.05) 0%, transparent 70%);
+  }
+  .vade-book-ornament {
+    font-family: 'Playfair Display', serif; font-size: 200px; font-weight: 900;
+    color: rgba(201,168,76,0.03); position: absolute;
+    top: 50%; left: 50%; transform: translate(-50%,-50%);
+    user-select: none; pointer-events: none; white-space: nowrap;
+  }
+  .vade-book-lei {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 24px; position: relative;
+  }
+  .vade-book-title {
+    font-family: 'Playfair Display', serif; font-size: clamp(40px,5vw,72px);
+    font-weight: 900; line-height: 1; margin-bottom: 16px; position: relative;
+    background: linear-gradient(135deg, var(--text) 0%, var(--accent2) 50%, var(--text) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .vade-book-sub {
+    font-family: 'Inter', sans-serif; font-style: italic;
+    font-size: 16px; color: var(--text2); position: relative;
+  }
+  .vade-book-divider {
+    width: 60px; height: 1px; background: var(--accent); opacity: 0.4;
+    margin: 28px auto; position: relative;
+  }
+  .vade-book-intro {
+    font-size: 13px; color: var(--text3); max-width: 500px;
+    line-height: 1.8; position: relative;
+  }
+  .vade-book-stats {
+    display: flex; gap: 40px; margin-top: 40px; position: relative;
+  }
+  .vade-stat h4 {
+    font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; color: var(--accent);
+  }
+  .vade-stat p { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text3); margin-top: 4px; letter-spacing: 0.1em; text-transform: uppercase; }
+  /* Book sections */
+  .vade-part {
+    border-bottom: 1px solid var(--border);
+  }
+  .vade-part-header {
+    padding: 48px 60px 0;
+    position: sticky; top: 0;
+    background: var(--bg);
+    z-index: 10;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 24px;
+  }
+  .vade-part-eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent);
+    margin-bottom: 8px; opacity: 0.7;
+  }
+  .vade-part-title {
+    font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; line-height: 1;
+  }
+  .vade-part-range {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--text3); margin-top: 6px;
+  }
+  /* Chapter */
+  .vade-chapter {
+    padding: 0 60px;
+  }
+  .vade-chapter-title {
+    font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700;
+    color: var(--text2); padding: 28px 0 16px;
+    border-bottom: 1px solid rgba(42,42,53,0.5);
+    margin-bottom: 4px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .vade-chapter-title::before {
+    content: ''; width: 4px; height: 20px;
+    background: var(--accent); border-radius: 2px; flex-shrink: 0; opacity: 0.6;
+  }
+  /* Articles */
+  .vade-article {
+    padding: 20px 0; border-bottom: 1px solid rgba(42,42,53,0.4);
+    display: grid; grid-template-columns: 88px 1fr; gap: 20px;
+    align-items: start; cursor: pointer; transition: background 0.15s;
+    margin: 0 -12px; padding-left: 12px; padding-right: 12px; border-radius: 4px;
+  }
+  .vade-article:hover { background: rgba(201,168,76,0.03); }
+  .vade-article:last-child { border-bottom: none; }
+  .vade-art-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    color: var(--accent); padding-top: 3px; letter-spacing: 0.05em;
+  }
+  .vade-art-num .vade-hot {
+    display: block; font-size: 9px; color: var(--red); margin-top: 4px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .vade-art-body {}
+  .vade-art-caput {
+    font-family: 'Inter', sans-serif; font-size: 15px;
+    color: var(--text); line-height: 1.85;
+  }
+  .vade-art-caput strong { color: var(--accent2); font-weight: 700; }
+  .vade-art-par {
+    font-family: 'Inter', sans-serif; font-size: 14px;
+    color: var(--text2); line-height: 1.8; margin-top: 8px; padding-left: 16px;
+    border-left: 2px solid rgba(42,42,53,0.8);
+  }
+  .vade-art-par em { color: var(--text3); font-style: normal; font-size: 11px; font-family: 'JetBrains Mono', monospace; }
+  .vade-art-inc {
+    font-family: 'Inter', sans-serif; font-size: 14px;
+    color: var(--text2); line-height: 1.8; margin-top: 6px; padding-left: 16px;
+    display: flex; gap: 10px;
+  }
+  .vade-art-inc .inc-num { color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 11px; flex-shrink: 0; padding-top: 2px; }
+  .vade-art-nota {
+    margin-top: 10px; padding: 10px 14px;
+    background: rgba(201,168,76,0.05); border-left: 2px solid rgba(201,168,76,0.3);
+    border-radius: 0 4px 4px 0;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    color: var(--accent2); line-height: 1.7;
+  }
+  .vade-no-results {
+    padding: 80px 60px; text-align: center;
+    font-family: 'Playfair Display', serif; font-size: 24px;
+    color: var(--text3); display: none;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* ── USER BAR ── */
+  .user-bar {
+    position: fixed; top: 0; right: 0;
+    height: 48px;
+    display: flex; align-items: center; gap: 12px;
+    padding: 0 20px;
+    background: rgba(13,13,15,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    border-left: 1px solid var(--border);
+    z-index: 300;
+    border-radius: 0 0 0 10px;
+  }
+  .user-bar-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--text2);
+    letter-spacing: 0.05em;
+  }
+  .user-bar-plan {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 3px; padding: 2px 7px;
+  }
+  .user-bar-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--text3);
+    background: none; border: 1px solid var(--border);
+    border-radius: 4px; padding: 4px 10px;
+    cursor: pointer; transition: all 0.2s;
+    text-decoration: none; display: inline-block;
+  }
+  .user-bar-btn:hover { color: var(--accent); border-color: var(--accent); }
+  .user-bar-sep { width: 1px; height: 20px; background: var(--border); }
+  .user-bar-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 12px; font-weight: 900; color: #0d0d0f;
+  }
+  /* adjust main so user bar doesn't overlap */
+  .main { padding-top: 48px; }
+  .settings-overlay {
+    position: fixed; inset: 0; z-index: 500;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.25s;
+  }
+  .settings-overlay.open { opacity: 1; pointer-events: all; }
+  .settings-modal {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 32px; width: 100%; max-width: 400px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+    transform: translateY(16px); transition: transform 0.3s cubic-bezier(0.22,1,0.36,1);
+  }
+  .settings-overlay.open .settings-modal { transform: translateY(0); }
+  .settings-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+  .settings-title { font-family:'Playfair Display',serif; font-size:20px; font-weight:900; }
+  .settings-close {
+    background:none; border:1px solid var(--border); border-radius:6px;
+    width:30px; height:30px; cursor:pointer; color:var(--text2);
+    display:flex; align-items:center; justify-content:center; transition:all 0.2s;
+  }
+  .settings-close:hover { color:var(--text); border-color:var(--text3); }
+  .settings-tabs { display:flex; gap:4px; margin-bottom:24px; border-bottom:1px solid var(--border); }
+  .stab {
+    padding:8px 16px; background:none; border:none; cursor:pointer;
+    font-family:'Inter',sans-serif; font-size:13px; color:var(--text3);
+    border-bottom:2px solid transparent; margin-bottom:-1px; transition:all 0.2s;
+  }
+  .stab.active { color:var(--accent); border-bottom-color:var(--accent); }
+  .stab-body { display:none; } .stab-body.active { display:block; }
+  .sfield { display:flex; flex-direction:column; gap:5px; margin-bottom:14px; }
+  .slabel { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text3);
+            text-transform:uppercase; letter-spacing:0.1em; }
+  .sinput {
+    padding:10px 14px; background:var(--surface2); border:1px solid var(--border);
+    border-radius:7px; color:var(--text); font-family:'Inter',sans-serif; font-size:13px;
+    outline:none; transition:border-color 0.2s;
+  }
+  .sinput:focus { border-color:var(--accent); }
+  .smsg { font-size:12px; min-height:16px; margin-bottom:12px; }
+  .smsg.ok { color:var(--green); } .smsg.err { color:var(--red); }
+  .sbtn {
+    width:100%; padding:11px; background:var(--accent); color:#0d0d0f;
+    border:none; border-radius:7px; font-family:'Playfair Display',serif;
+    font-size:15px; font-weight:700; cursor:pointer; transition:all 0.2s;
+  }
+  .sbtn:hover { background:var(--accent2); } .sbtn:disabled { opacity:0.6; cursor:not-allowed; }
+
+  @media (max-width: 768px) {
+    :root { --sidebar-w: 0px; }
+    .sidebar {
+      width: 100%; height: 56px; flex-direction: row;
+      top: auto; bottom: 0; left: 0; border-right: none;
+      border-top: 1px solid var(--border);
+    }
+    .sidebar-logo { display: none; }
+    .sidebar-nav { flex-direction: row; width: 100%; justify-content: space-around; padding: 0 8px; }
+    .nav-btn { width: 44px; height: 44px; }
+    .nav-btn.active::before { display: none; }
+    .nav-tooltip { display: none; }
+    .main { margin-left: 0; padding-bottom: 72px; }
+    .user-bar { left: 0; border-left: none; border-radius: 0; }
+    .user-bar-name, .user-bar-plan { display: none; }
+    .user-bar-sep:nth-child(4), .user-bar-sep:nth-child(6) { display: none; }
+    .class-card { padding: 16px; }
+    .classes-grid { grid-template-columns: 1fr; gap: 10px; padding: 16px; }
+    .quiz-container { padding: 16px 14px; max-width: 100%; }
+    .quiz-start { padding: 24px 16px; }
+    .quiz-config { flex-direction: column; gap: 12px; }
+    .quiz-question-text { font-size: 15px; line-height: 1.6; }
+    .quiz-option { padding: 14px 14px; font-size: 14px; }
+    .quiz-top-row { flex-direction: column; gap: 8px; }
+    .hist-row { flex-wrap: wrap; gap: 6px; }
+    .hist-area-name { min-width: 100%; max-width: 100%; }
+    .simulados-page { padding: 16px; }
+    .vade-layout { flex-direction: column; }
+    .vade-sidebar { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid var(--border); }
+    .vade-toc { max-height: 180px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="user-bar" id="user-bar">
+  <div class="user-bar-avatar" id="user-avatar">L</div>
+  <div class="user-bar-name" id="user-name">...</div>
+  <div class="user-bar-sep"></div>
+  <span class="user-bar-plan" id="user-plan">Free</span>
+  <div class="user-bar-sep"></div>
+  <button class="theme-btn" id="theme-btn" onclick="toggleTheme()" title="Alternar tema">
+    <svg id="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>
+  </button>
+  <div class="user-bar-sep"></div>
+  <button class="user-bar-btn" onclick="openSettings()">⚙</button>
+  <a class="user-bar-btn" href="../index.html">← Site</a>
+  <button class="user-bar-btn" onclick="lexLogout()">Sair</button>
+</div>
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <svg viewBox="0 0 32 32" fill="none">
+      <path d="M16 2L4 8v8c0 7.5 5.2 13.5 12 15 6.8-1.5 12-7.5 12-15V8L16 2z" stroke="#c9a84c" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M11 16l3 3 7-7" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <nav class="sidebar-nav">
+    <a class="nav-btn" href="home.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span class="nav-tooltip">Início</span>
+    </a>
+    <a class="nav-btn" href="estudar.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+      <span class="nav-tooltip">Estudar</span>
+    </a>
+    <a class="nav-btn active" href="simulados.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span class="nav-tooltip">Simulados</span>
+    </a>
+    <a class="nav-btn" href="vade.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+      <span class="nav-tooltip" data-alt="Código Civil">Vade Mecum</span>
+    </a>
+  </nav>
+</aside>
+<main class="main">
+<div class="page active" id="page-simulados">
+  <div class="simulados-page">
+    <div class="page-header">
+      <div>
+        <h2>Simulados</h2>
+        <p>Teste seus conhecimentos com questões de concurso</p>
+      </div>
+    </div>
+    <div class="quiz-container">
+      <div id="quiz-start" class="quiz-start">
+        <h3>Iniciar Simulado</h3>
+        <p>Escolha a área e quantidade de questões para personalizar seu treino.</p>
+        <div class="quiz-config" id="quiz-area-chips"></div>
+        <button class="btn-primary" id="btn-comecar" onclick="startQuiz()" style="font-size:16px;padding:14px 32px;">Começar →</button>
+      </div>
+      <div id="quiz-loading" style="display:none;text-align:center;padding:48px 0;">
+        <div style="font-size:32px;margin-bottom:12px;animation:spin 1s linear infinite;display:inline-block">⚖️</div>
+        <p style="color:var(--text2)">Carregando questões…</p>
+      </div>
+      <div id="quiz-active">
+        <div class="quiz-layout">
+          <div class="quiz-main">
+            <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="q-progress"></div></div>
+            <div class="quiz-top-row">
+              <div class="question-num" id="q-num"></div>
+              <div class="quiz-timer" id="quiz-timer">
+                <span class="quiz-timer-icon">⏱</span>
+                <span id="quiz-timer-display">00:00</span>
+              </div>
+            </div>
+            <div class="question-text" id="q-text"></div>
+            <div class="options" id="q-options"></div>
+            <div class="quiz-feedback" id="q-feedback"></div>
+            <button class="quiz-next-btn" id="q-next" onclick="nextQuestion()">Próxima →</button>
+          </div>
+          <div id="quiz-explanation" class="quiz-explanation-panel">
+            <div class="expl-header"><span>✗</span> Por que esta é a resposta certa?</div>
+            <div class="expl-correct">
+              <span class="expl-correct-label">Resposta correta</span>
+              <span id="expl-correct-text"></span>
+            </div>
+            <div class="expl-body" id="expl-body"></div>
+          </div>
+        </div>
+      </div>
+      <div id="quiz-result" class="quiz-result">
+        <div style="font-size:48px;margin-bottom:16px;">⚖️</div>
+        <h3>Simulado concluído!</h3>
+        <div class="score-big" id="q-score"></div>
+        <p id="q-score-msg" style="color:var(--text2);font-style:italic;margin-bottom:32px;"></p>
+        <button class="btn-primary" onclick="resetQuiz()">Novo Simulado</button>
+      </div>
+      <div class="hist-section" id="hist-section" style="display:none">
+        <!-- Cards de resumo -->
+        <div class="hist-title">Seu desempenho</div>
+        <div class="hist-stats-row" id="hist-stats"></div>
+        <!-- Barras por área -->
+        <div class="hist-title" id="hist-areas-title" style="display:none">Acertos por área</div>
+        <div id="hist-area-bars"></div>
+        <!-- Tabela histórico -->
+        <div class="hist-title" id="hist-table-title" style="display:none;margin-top:28px">Histórico recente</div>
+        <div id="hist-body"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+
+<script>
+// ─── Lex Studio — API Client ──────────────────────────────────────────────────
+// Centraliza todas as chamadas ao backend PHP
+
+const API_BASE = '/api';
+
+// ─── HTTP helpers ─────────────────────────────────────────────────────────────
+async function apiRequest(path, method = 'GET', body = null) {
+  const token = localStorage.getItem('lex_token');
+  const opts = {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { 'X-Session-Token': token } : {}),
+    },
+  };
+  if (body) opts.body = JSON.stringify(body);
+
+  try {
+    const res  = await fetch(API_BASE + path, opts);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.mensagem || 'Erro na requisição');
+    return data;
+  } catch (err) {
+    console.error('[API]', path, err.message);
+    throw err;
+  }
+}
+
+const api = {
+  get:    (path)         => apiRequest(path, 'GET'),
+  post:   (path, body)   => apiRequest(path, 'POST',   body),
+  put:    (path, body)   => apiRequest(path, 'PUT',    body),
+  delete: (path)         => apiRequest(path, 'DELETE'),
+};
+
+// ─── AUTH ─────────────────────────────────────────────────────────────────────
+const Auth = {
+  async login(email, senha) {
+    const data = await api.post('/auth/?action=login', { email, senha });
+    localStorage.setItem('lex_token',   data.token);
+    localStorage.setItem('lex_user',    JSON.stringify(data.usuario));
+    return data.usuario;
+  },
+
+  async register(nome, sobrenome, email, senha) {
+    const data = await api.post('/auth/?action=register', { nome, sobrenome, email, senha });
+    localStorage.setItem('lex_token',   data.token);
+    localStorage.setItem('lex_user',    JSON.stringify(data.usuario));
+    return data.usuario;
+  },
+
+  async logout() {
+    try { await api.post('/auth/?action=logout'); } catch (_) {}
+    localStorage.removeItem('lex_token');
+    localStorage.removeItem('lex_user');
+    window.location.href = '../index.html';
+  },
+
+  async me() {
+    const data = await api.get('/auth/?action=me');
+    localStorage.setItem('lex_user', JSON.stringify(data.usuario));
+    return data.usuario;
+  },
+
+  async salvarTema(tema) {
+    await api.put('/auth/?action=tema', { tema });
+  },
+
+  getUsuarioLocal() {
+    const raw = localStorage.getItem('lex_user');
+    return raw ? JSON.parse(raw) : null;
+  },
+
+  isLogado() {
+    return !!localStorage.getItem('lex_token');
+  },
+};
+
+// ─── ÁREAS ───────────────────────────────────────────────────────────────────
+const Areas = {
+  async listar() {
+    const data = await api.get('/areas/');
+    return data.areas;
+  },
+
+  async topicos(area_id) {
+    const data = await api.get(`/areas/?action=topicos&area_id=${area_id}`);
+    return data;
+  },
+
+  async marcarTopico(topico_id) {
+    await api.post('/areas/?action=marcar_topico', { topico_id });
+  },
+};
+
+// ─── ANOTAÇÕES ───────────────────────────────────────────────────────────────
+const Anotacoes = {
+  async buscar(area_id) {
+    const data = await api.get(`/anotacoes/?area_id=${area_id}`);
+    return data.anotacao?.conteudo || '';
+  },
+
+  async salvar(area_id, conteudo) {
+    await api.post(`/anotacoes/?area_id=${area_id}`, { conteudo });
+  },
+
+  async limpar(area_id) {
+    await api.delete(`/anotacoes/?area_id=${area_id}`);
+  },
+};
+
+// ─── SIMULADOS ───────────────────────────────────────────────────────────────
+const Simulados = {
+  async buscarQuestoes(area_id = null, total = 10) {
+    const params = `area_id=${area_id || 0}&total=${total}`;
+    const data   = await api.get(`/simulados/?action=questoes&${params}`);
+    return data.questoes;
+  },
+
+  async iniciar(area_id, total) {
+    const data = await api.post('/simulados/?action=iniciar', { area_id, total });
+    return data.simulado_id;
+  },
+
+  async responder(simulado_id, questao_id, opcao_id, tempo_ms) {
+    const data = await api.post('/simulados/?action=responder', { simulado_id, questao_id, opcao_id, tempo_ms });
+    return data.correta;
+  },
+
+  async finalizar(simulado_id, tempo_segundos) {
+    const data = await api.post('/simulados/?action=finalizar', { simulado_id, tempo_segundos });
+    return data.resultado;
+  },
+
+  async historico() {
+    const data = await api.get('/simulados/?action=historico');
+    return data.historico;
+  },
+};
+
+// ─── VADE MECUM ───────────────────────────────────────────────────────────────
+const Vade = {
+  async carregar() {
+    const data = await api.get('/vade/');
+    return data.partes;
+  },
+
+  async buscar(q) {
+    const data = await api.get(`/vade/?action=buscar&q=${encodeURIComponent(q)}`);
+    return data.resultados;
+  },
+
+  async favoritar(artigo_id) {
+    await api.post('/vade/?action=favoritar', { artigo_id });
+  },
+
+  async desfavoritar(artigo_id) {
+    await api.delete(`/vade/?action=favoritar&artigo_id=${artigo_id}`);
+  },
+
+  async favoritos() {
+    const data = await api.get('/vade/?action=favoritos');
+    return data.favoritos;
+  },
+};
+
+// ─── PROGRESSO ────────────────────────────────────────────────────────────────
+const Progresso = {
+  async resumo() {
+    const data = await api.get('/progresso/');
+    return data;
+  },
+};
+
+
+// ─── DATA ────────────────────────────────────────────────────────────────────
+const classes = [
+  {
+    id: 0, num: '01', title: 'Parte Geral',
+    desc: 'Fundamentos das pessoas, bens e fatos jurídicos.',
+    tags: ['Personalidade','Capacidade','Bens','Negócio Jurídico'],
+    topics: [
+      {
+        title: 'Das Pessoas Naturais',
+        content: 'A personalidade civil da pessoa natural começa com o nascimento com vida, protegendo-se os direitos do nascituro desde a concepção.',
+        items: [
+          'Início e fim da personalidade — art. 1º e 6º CC',
+          'Capacidade de direito (de gozo) vs. capacidade de fato (de exercício)',
+          'Incapacidade absoluta: menores de 16 anos — art. 3º',
+          'Incapacidade relativa: maiores de 16 e menores de 18, pródigos, ébrios habituais — art. 4º',
+          'Emancipação: voluntária, judicial e legal',
+          'Domicílio: conceito, pluralidade e domicílio profissional',
+          'Direitos da personalidade: irrenunciáveis, intransmissíveis, extrapatrimoniais'
+        ],
+        note: 'Atenção: com o Estatuto da Pessoa com Deficiência (Lei 13.146/2015), a incapacidade absoluta ficou restrita aos menores de 16 anos.'
+      },
+      {
+        title: 'Das Pessoas Jurídicas',
+        content: 'Entidades distintas dos membros que as compõem, dotadas de personalidade e patrimônio próprios.',
+        items: [
+          'Pessoas jurídicas de direito público: interno (União, Estados, DF, Municípios) e externo',
+          'Pessoas jurídicas de direito privado: associações, sociedades, fundações, EIRELI, partidos, organizações religiosas',
+          'Início: registro do ato constitutivo',
+          'Desconsideração da personalidade jurídica: teoria maior e menor',
+          'Grupos despersonalizados: espólio, massa falida, condomínio'
+        ],
+        note: 'Art. 50 — Desconsideração: desvio de finalidade ou confusão patrimonial.'
+      },
+      {
+        title: 'Dos Bens Jurídicos',
+        content: 'Classificação essencial para determinar o regime aplicável a cada bem.',
+        items: [
+          'Móveis × Imóveis — critério jurídico (art. 79-84)',
+          'Bens fungíveis × infungíveis; consumíveis × inconsumíveis',
+          'Divisíveis × indivisíveis; singulares × coletivos',
+          'Bens públicos: uso comum, uso especial, dominicais',
+          'Bens fora do comércio: extracomercialidade',
+          'Pertenças × acessórios × partes integrantes'
+        ],
+        note: 'Regra: acessório segue o principal (art. 92).'
+      },
+      {
+        title: 'Do Negócio Jurídico',
+        content: 'Manifestação de vontade destinada a produzir efeitos jurídicos.',
+        items: [
+          'Elementos essenciais: agente capaz, objeto lícito, determinado ou determinável, forma prescrita ou não defesa em lei',
+          'Vícios do consentimento: erro, dolo, coação, estado de perigo, lesão',
+          'Vícios sociais: simulação e fraude contra credores',
+          'Invalidade: nulidade absoluta × anulabilidade',
+          'Interpretação dos negócios: boa-fé objetiva',
+          'Condição, termo e encargo (modo)'
+        ],
+        note: 'A simulação causa nulidade absoluta (art. 167). Os demais vícios sociais causam anulabilidade.'
+      },
+      {
+        title: 'Da Prescrição e Decadência',
+        content: 'Limitação temporal ao exercício de direitos.',
+        items: [
+          'Prescrição: extingue a pretensão (não o direito subjetivo)',
+          'Decadência: extingue o próprio direito potestativo',
+          'Prazo geral prescricional: 10 anos (art. 205)',
+          'Prazos especiais: 5, 4, 3, 2, 1 anos — art. 206',
+          'Causas de impedimento, suspensão e interrupção',
+          'Prescrição não pode ser renunciada antecipadamente'
+        ],
+        note: 'Decadência legal não admite suspensão ou interrupção (art. 207).'
+      }
+    ]
+  },
+  {
+    id: 1, num: '02', title: 'Obrigações',
+    desc: 'Vínculos jurídicos entre credor e devedor.',
+    tags: ['Fontes','Adimplemento','Inadimplemento','Extinção'],
+    topics: [
+      {
+        title: 'Modalidades das Obrigações',
+        content: 'Classificação das obrigações quanto ao objeto e ao sujeito.',
+        items: [
+          'De dar coisa certa, de dar coisa incerta, de fazer, de não fazer',
+          'Obrigações divisíveis × indivisíveis',
+          'Solidariedade ativa e passiva — não se presume (art. 265)',
+          'Obrigações alternativas: escolha pertence ao devedor, salvo convenção em contrário',
+          'Obrigações facultativas: objeto único, mas devedor pode substituir'
+        ],
+        note: 'Nas obrigações de dar coisa certa: "a coisa perece para o dono" (res perit domino).'
+      },
+      {
+        title: 'Adimplemento e Extinção',
+        content: 'Formas de satisfação e extinção do vínculo obrigacional.',
+        items: [
+          'Pagamento: pagamento indevido gera obrigação de restituir',
+          'Consignação em pagamento: recusa injusta ou impossibilidade de pagar ao credor',
+          'Sub-rogação: legal e convencional',
+          'Dação em pagamento, novação, compensação, confusão, remissão',
+          'Lugar e tempo do pagamento: quérable × portable'
+        ],
+        note: 'Pagamento feito a credor incapaz ou de má-fé não exonera o devedor (art. 310).'
+      },
+      {
+        title: 'Inadimplemento',
+        content: 'Responsabilidade pelo descumprimento da obrigação.',
+        items: [
+          'Mora do devedor: retardamento culposo (mora solvendi)',
+          'Mora do credor: recusa injustificada (mora accipiendi)',
+          'Cláusula penal: moratória × compensatória',
+          'Arras: confirmatórias × penitenciais',
+          'Perdas e danos: dano emergente + lucros cessantes',
+          'Caso fortuito e força maior como excludentes'
+        ],
+        note: 'A cláusula penal não pode exceder o valor da obrigação principal (art. 412).'
+      }
+    ]
+  },
+  {
+    id: 2, num: '03', title: 'Contratos',
+    desc: 'Acordos de vontades geradores de obrigações.',
+    tags: ['Formação','Vícios','Extinção','Tipos'],
+    topics: [
+      {
+        title: 'Princípios Contratuais',
+        content: 'Pilares que orientam a interpretação e execução dos contratos.',
+        items: [
+          'Autonomia da vontade / autonomia privada',
+          'Boa-fé objetiva: art. 422 — nas fases pré, durante e pós-contratual',
+          'Função social do contrato: art. 421',
+          'Relatividade dos efeitos: res inter alios acta',
+          'Força obrigatória (pacta sunt servanda) × revisão judicial (rebus sic stantibus)',
+          'Equilíbrio contratual e vedação ao enriquecimento sem causa'
+        ],
+        note: 'CDC afasta a força obrigatória quando houver desequilíbrio + CDC prevalece sobre CC nas relações de consumo.'
+      },
+      {
+        title: 'Formação do Contrato',
+        content: 'Da proposta até a aceitação e o vínculo obrigacional.',
+        items: [
+          'Proposta (oferta): vinculante ao proponente',
+          'Aceitação: deve ser tempestiva e sem modificações',
+          'Contratos entre ausentes: teoria da expedição (art. 434)',
+          'Pré-contrato (contrato preliminar): art. 462-466',
+          'Contrato de adesão: interpretação favorável ao aderente'
+        ],
+        note: 'Proposta com prazo vincula o proponente durante o prazo.'
+      },
+      {
+        title: 'Extinção do Contrato',
+        content: 'Causas de dissolução do vínculo contratual.',
+        items: [
+          'Resolução: inadimplemento voluntário ou involuntário',
+          'Resilição: distrato (bilateral) ou denúncia (unilateral)',
+          'Rescisão: nomenclatura popular (lesão enorme no CC)',
+          'Resolução por onerosidade excessiva: teoria da imprevisão — art. 478',
+          'Exceção do contrato não cumprido (exceptio non adimpleti contractus) — art. 476'
+        ],
+        note: 'Para resolução por onerosidade excessiva, o fato deve ser extraordinário, imprevisível e superveniente.'
+      },
+      {
+        title: 'Contratos em Espécie',
+        content: 'Principais contratos típicos previstos no Código Civil.',
+        items: [
+          'Compra e venda: obrigações do vendedor e comprador, evicção, vícios redibitórios',
+          'Doação: modalidades, restrições, revogação',
+          'Locação de coisas (regra CC; imóveis urbanos — Lei 8.245/91)',
+          'Mútuo: gratuito vs. oneroso; mútuo feneratício',
+          'Mandato: representação, revogação, substabelecimento',
+          'Fiança: subsidiária, acessória, interpretação estrita',
+          'Seguro: interesse segurável, agravamento de risco'
+        ],
+        note: 'Fiança não admite interpretação extensiva (art. 819).'
+      }
+    ]
+  },
+  {
+    id: 3, num: '04', title: 'Responsabilidade Civil',
+    desc: 'Obrigação de reparar danos causados.',
+    tags: ['Subjetiva','Objetiva','Dano','Nexo Causal'],
+    topics: [
+      {
+        title: 'Pressupostos da Responsabilidade',
+        content: 'Elementos necessários para configurar o dever de indenizar.',
+        items: [
+          'Conduta humana (ação ou omissão)',
+          'Culpa ou dolo — para responsabilidade subjetiva',
+          'Nexo de causalidade',
+          'Dano: material, moral, estético, existencial',
+          'Responsabilidade objetiva: dispensa culpa (teoria do risco)',
+          'Atividade de risco normal: art. 927, parágrafo único'
+        ],
+        note: 'CDC adota responsabilidade objetiva como regra para relações de consumo.'
+      },
+      {
+        title: 'Excludentes e Redutores',
+        content: 'Causas que afastam ou reduzem a responsabilidade civil.',
+        items: [
+          'Caso fortuito e força maior',
+          'Culpa exclusiva da vítima',
+          'Fato de terceiro',
+          'Exercício regular de direito e legítima defesa',
+          'Culpa concorrente: reduz proporcional indenização (art. 945)',
+          'Cláusula de não indenizar: válida entre iguais, nula no CDC'
+        ],
+        note: 'No risco integral (dano ambiental, dano nuclear), não há excludentes.'
+      },
+      {
+        title: 'Dano Moral',
+        content: 'Lesão a direitos da personalidade e sua reparação.',
+        items: [
+          'Dano moral in re ipsa: dispensa prova do sofrimento',
+          'Critérios para arbitramento: extensão do dano, grau de culpa, condição econômica',
+          'Função: reparatória + punitiva + preventiva (punitive damages)',
+          'Cumulação: dano moral + dano material + dano estético',
+          'Dano moral coletivo: interesses difusos'
+        ],
+        note: 'Súmula 37 STJ: são cumuláveis as indenizações por dano material e moral.'
+      }
+    ]
+  },
+  {
+    id: 4, num: '05', title: 'Direito das Coisas',
+    desc: 'Relação jurídica entre pessoa e bem.',
+    tags: ['Posse','Propriedade','Direitos Reais','Garantias'],
+    topics: [
+      {
+        title: 'Posse',
+        content: 'Poder de fato exercido sobre bem com ânimo de dono ou não.',
+        items: [
+          'Teorias: subjetiva (Savigny) vs. objetiva (Ihering) — CC adota objetiva',
+          'Composse, posse direta × indireta',
+          'Classificações: justa × injusta; de boa-fé × má-fé',
+          'Efeitos: percepção de frutos, indenização por benfeitorias, usucapião',
+          'Ações possessórias: reintegração, manutenção, interdito proibitório',
+          'Interditos e o princípio da função social da posse'
+        ],
+        note: 'Posse nova (até 1 ano e dia): procedimento possessório com liminar. Posse velha: procedimento ordinário.'
+      },
+      {
+        title: 'Propriedade',
+        content: 'Direito real mais amplo: usar, gozar, dispor e reivindicar.',
+        items: [
+          'Função social da propriedade: arts. 5º, XXIII CF e 1.228 CC',
+          'Propriedade resolúvel × fiduciária',
+          'Limitações ao direito de propriedade: direito de vizinhança',
+          'Descoberta (achado de coisa perdida) — art. 1.233',
+          'Usucapião: ordinária (10a), extraordinária (15/10a), especial rural (5a), urbana (5a), familiar (2a)',
+          'Aquisição derivada: registro — princípio da fé pública registral'
+        ],
+        note: 'Usucapião extrajudicial: via cartório, procedimento mais ágil (CPC/2015 + provimento CNJ).'
+      },
+      {
+        title: 'Direitos Reais de Garantia',
+        content: 'Penhor, hipoteca e anticrese.',
+        items: [
+          'Penhor: bens móveis; possibilita transferência da posse',
+          'Hipoteca: bens imóveis, navios e aeronaves; não transfere posse',
+          'Alienação fiduciária: propriedade resolúvel para garantia (Lei 9.514/97)',
+          'Anticrese: entrega do bem para percepção de frutos',
+          'Princípios: especialidade, publicidade, indivisibilidade'
+        ],
+        note: 'Hipoteca: prazo máximo de 30 anos. Pode haver hipotecas de 1º, 2º e 3º graus.'
+      }
+    ]
+  },
+  {
+    id: 5, num: '06', title: 'Família',
+    desc: 'Relações conjugais, parentais e de afinidade.',
+    tags: ['Casamento','Divórcio','Filiação','Tutela'],
+    topics: [
+      {
+        title: 'Casamento',
+        content: 'Instituição formalizadora da família conjugal.',
+        items: [
+          'Requisitos: capacidade, livre consentimento, forma',
+          'Impedimentos matrimoniais: art. 1.521 (absolutos)',
+          'Causas suspensivas: art. 1.523 (relativas)',
+          'Regimes de bens: comunhão parcial (supletivo), comunhão universal, separação e participação final nos aquestos',
+          'Pacto antenupcial: forma pública, eficácia com casamento',
+          'Casamento putativo: efeitos para cônjuge de boa-fé'
+        ],
+        note: 'Separação obrigatória de bens: maiores de 70 anos — Súmula 377 STF aplica a comunicação de aquestos.'
+      },
+      {
+        title: 'Dissolução da Família',
+        content: 'Fim do vínculo conjugal e suas consequências.',
+        items: [
+          'Divórcio: EC 66/2010 — sem prazo nem causa, direto',
+          'Divórcio consensual e litigioso',
+          'Alimentos: natureza, características, ação de alimentos',
+          'Guarda compartilhada: regra; guarda unilateral: exceção',
+          'Alienação parental: Lei 12.318/2010',
+          'Bem de família: impenhorabilidade — Lei 8.009/90'
+        ],
+        note: 'União estável: convivência pública, contínua, duradoura e com objetivo de constituir família (art. 1.723).'
+      },
+      {
+        title: 'Filiação e Parentesco',
+        content: 'Vínculo jurídico entre pais e filhos.',
+        items: [
+          'Igualdade absoluta entre filhos — art. 227 §6º CF',
+          'Reconhecimento voluntário e judicial da paternidade',
+          'Ação negatória de paternidade e presunção pater is est',
+          'Adoção: ECA + CC; cria parentesco civil',
+          'Poder familiar: deveres e limitações',
+          'Parentesco: consanguíneo, afim, civil; linha reta e colateral'
+        ],
+        note: 'Multiparentalidade: STF RE 898.060 — reconhecida a parentalidade socioafetiva sem excluir a biológica.'
+      }
+    ]
+  },
+  {
+    id: 6, num: '07', title: 'Sucessões',
+    desc: 'Transmissão do patrimônio causa mortis.',
+    tags: ['Herança','Testamento','Legado','Inventário'],
+    topics: [
+      {
+        title: 'Sucessão Legítima',
+        content: 'Herança transmitida por força de lei, na ausência ou parcialidade de testamento.',
+        items: [
+          'Ordem de vocação hereditária: descendentes > ascendentes > cônjuge > colaterais',
+          'Cônjuge sobrevivente: concorre com descendentes e ascendentes',
+          'Regime de bens e direito à herança do cônjuge',
+          'Direito de representação: na linha reta descendente e colaterais até 3º grau',
+          'Indignidade e deserdação: casos e efeitos',
+          'Herança jacente × vacante'
+        ],
+        note: 'Companheiro: STF RE 878.694 — mesmos direitos sucessórios do cônjuge.'
+      },
+      {
+        title: 'Testamento',
+        content: 'Ato de última vontade que dispõe sobre o patrimônio.',
+        items: [
+          'Formas ordinárias: público, cerrado, particular',
+          'Formas especiais: marítimo, aeronáutico, militar',
+          'Herdeiro necessário: quota indisponível (legítima) = 50%',
+          'Legado: disposição a título particular',
+          'Substituição testamentária e fideicomisso',
+          'Codicilo: para atos de pequena monta'
+        ],
+        note: 'Testemunha não pode ser herdeiro nem legatário do testador (art. 1.801).'
+      },
+      {
+        title: 'Inventário e Partilha',
+        content: 'Procedimento de arrecadação e distribuição da herança.',
+        items: [
+          'Abertura da sucessão: morte real ou presumida',
+          'Prazo para abertura do inventário: 60 dias da abertura',
+          'Inventário judicial × extrajudicial (cartório)',
+          'Meação × herança: distinção essencial',
+          'Sobrepartilha: bens descobertos após partilha',
+          'Colação: bens doados em vida que devem ser conferidos'
+        ],
+        note: 'Inventário extrajudicial: exige consenso dos herdeiros capazes + ausência de testamento.'
+      }
+    ]
+  },
+  {
+    id: 7, num: '08', title: 'Direito Empresarial',
+    desc: 'Atividade econômica organizada e seus institutos.',
+    tags: ['Empresário','Sociedades','Títulos','Falência'],
+    topics: [
+      {
+        title: 'Empresário e Estabelecimento',
+        content: 'Conceito e elementos da empresa no direito privado.',
+        items: [
+          'Empresário: quem exerce profissionalmente atividade econômica organizada — art. 966',
+          'Não empresários: profissões intelectuais, atividades rurais (salvo registro)',
+          'Estabelecimento empresarial: complexo de bens',
+          'Fundo de empresa (aviamento) e clientela',
+          'Registro público de empresas: JUCEC/Juntas Comerciais',
+          'Prepostos e representantes do empresário'
+        ],
+        note: 'MEI — Microempreendedor Individual: faturamento até R$ 81k; um empregado.'
+      },
+      {
+        title: 'Sociedades Empresárias',
+        content: 'Tipos societários e suas características.',
+        items: [
+          'Sociedade simples × sociedade empresária',
+          'Sociedade em nome coletivo: todos respondem ilimitadamente',
+          'Sociedade limitada (Ltda): quota social; responsabilidade limitada',
+          'Sociedade anônima (S/A): capital em ações; Lei 6.404/76',
+          'Sociedade em comandita simples e por ações',
+          'Dissolução: total × parcial (resolução da sociedade em relação a um sócio)'
+        ],
+        note: 'S/A aberta: ações negociadas em bolsa ou balcão; regulada pela CVM.'
+      }
+    ]
+  },
+  {
+    id: 8, num: '09', title: 'Direito do Consumidor',
+    desc: 'Proteção nas relações de consumo (CDC — Lei 8.078/90).',
+    tags: ['Vulnerabilidade','Responsabilidade','Práticas','Defesa'],
+    topics: [
+      {
+        title: 'Conceitos e Princípios',
+        content: 'Fundamentos do direito consumerista.',
+        items: [
+          'Consumidor: destinatário final (teoria finalista × maximalista)',
+          'Fornecedor: atividade habitual no mercado de consumo',
+          'Vulnerabilidade: técnica, jurídica, fática, informacional',
+          'Princípio da boa-fé objetiva e da transparência',
+          'Inversão do ônus da prova: art. 6º, VIII',
+          'Desconsideração da PJ: teoria menor do CDC (art. 28 §5º)'
+        ],
+        note: 'Prazo decadencial CDC: 30 dias (produto/serviço não duráveis) / 90 dias (duráveis).'
+      },
+      {
+        title: 'Responsabilidade do Fornecedor',
+        content: 'Vícios e defeitos nos produtos e serviços.',
+        items: [
+          'Fato do produto/serviço (acidente de consumo): responsabilidade objetiva',
+          'Vício do produto/serviço: inadequação para uso',
+          'Responsabilidade solidária de todos os fornecedores da cadeia',
+          'Recall: dever de retirar produto perigoso do mercado',
+          'Excludentes: culpa exclusiva do consumidor ou de terceiro; caso fortuito externo'
+        ],
+        note: 'Prescrição da pretensão de reparação de danos: 5 anos (art. 27 CDC).'
+      }
+    ]
+  },
+  {
+    id: 9, num: '10', title: 'Direito Internacional Privado',
+    desc: 'Regras de conexão para conflitos normativos internacionais.',
+    tags: ['LINDB','Domicílio','Estatuto Pessoal','Ordem Pública'],
+    topics: [
+      {
+        title: 'LINDB e Regras de Conexão',
+        content: 'Lei de Introdução às Normas do Direito Brasileiro.',
+        items: [
+          'Estatuto pessoal: lei do domicílio (Brasil) — art. 7º LINDB',
+          'Qualificações e lei aplicável aos bens: lei do lugar (lex rei sitae)',
+          'Obrigações: lei do lugar de constituição',
+          'Sucessão: lei do domicílio do falecido; salvo bens no Brasil e herdeiros brasileiros',
+          'Exceção de ordem pública: não aplicação de lei estrangeira ofensiva',
+          'Fraude à lei: simulação de elemento de conexão'
+        ],
+        note: 'Tratados internacionais prevalecem sobre a LINDB quando ratificados pelo Brasil.'
+      }
+    ]
+  },
+  // ── NOVAS ÁREAS ──────────────────────────────────────────────────────────
+  {
+    id: 10, num: '11', title: 'Fatos e Negócios Jurídicos',
+    desc: 'Classificação dos fatos jurídicos, elementos do negócio jurídico, vícios da vontade e invalidade.',
+    tags: ['Negócio Jurídico','Vício da Vontade','Invalidade','Simulação','Condição'],
+    topics: [
+      {
+        title: 'Fatos Jurídicos e Negócio Jurídico',
+        content: 'Fato jurídico é todo acontecimento que produz efeitos no mundo do Direito. O negócio jurídico é a espécie mais importante, caracterizado pela manifestação de vontade destinada a criar, modificar ou extinguir relações jurídicas.',
+        items: [
+          'Fato jurídico em sentido amplo: natural (stricto sensu) e humano (ato jurídico/negócio)',
+          'Negócio jurídico: declaração de vontade + finalidade negocial — bilateral, unilateral ou plurilateral',
+          'Plano da existência: elementos — agente, vontade, objeto, forma',
+          'Plano da validade (art. 104 CC): agente capaz, objeto lícito/possível/determinável, forma prescrita',
+          'Plano da eficácia: produção de efeitos — pode ser modulada por condição, termo ou encargo',
+          'Interpretação: art. 112 CC — intenção das partes prevalece sobre literalidade',
+          'Silêncio: importa anuência quando as circunstâncias e usos o autorizarem — art. 111'
+        ],
+        note: 'A escada ponteana (Pontes de Miranda) distingue os planos de existência, validade e eficácia — invalidade não implica necessariamente ineficácia.'
+      },
+      {
+        title: 'Condição, Termo e Encargo',
+        content: 'Elementos acidentais que modulam a eficácia do negócio jurídico.',
+        items: [
+          'Condição: cláusula que subordina o efeito do negócio a evento futuro e incerto — suspensiva ou resolutiva',
+          'Condição suspensiva: impede a aquisição do direito até que se implemente',
+          'Condição resolutiva: implementada, resolve o direito já adquirido',
+          'Condições proibidas: perplexas, puramente potestativas ilícitas, ilícitas — tornam o negócio nulo',
+          'Termo: evento futuro e certo — inicial (dies a quo) ou final (dies ad quem)',
+          'Encargo (modo): ônus imposto ao beneficiário de liberalidade — não impede aquisição, mas permite resolução',
+          'Distinção: encargo ≠ condição suspensiva — encargo não suspende, apenas grava'
+        ],
+        note: 'Condição puramente potestativa ("se eu quiser") é nula. Condição simplesmente potestativa (depende também de fato externo) é válida.'
+      },
+      {
+        title: 'Vícios da Vontade',
+        content: 'Defeitos que comprometem a manifestação de vontade, tornando o negócio anulável.',
+        items: [
+          'Erro: falsa representação da realidade — substancial (anula) × acidental (não anula)',
+          'Dolo: induzimento malicioso ao erro — principal (anula) × acidental (perdas e danos)',
+          'Coação: violência moral — absoluta (ato inexistente) ou relativa (anulável)',
+          'Estado de perigo: assunção de obrigação onerosa para salvar-se — art. 156',
+          'Lesão: desproporção por inexperiência ou necessidade — art. 157',
+          'Fraude contra credores: negócio em prejuízo de credores — ação pauliana (anulação)',
+          'Simulação: divergência intencional entre vontade real e declarada — nulidade absoluta'
+        ],
+        note: 'Simulação é vício social, não vício da vontade — gera nulidade (art. 167), não anulabilidade. O negócio dissimulado pode ser válido se substancialmente lícito.'
+      },
+      {
+        title: 'Invalidade do Negócio Jurídico',
+        content: 'Consequências jurídicas da violação dos requisitos de validade.',
+        items: [
+          'Nulidade absoluta (art. 166): objeto ilícito, forma preterida, motivo ilícito comum, simulação',
+          'Nulidade relativa (anulabilidade): protege interesse particular — agente relativamente incapaz, vícios da vontade',
+          'Nulidade: declarada de ofício, insuscetível de confirmação, imprescritível',
+          'Anulabilidade: alegada pelo interessado, admite confirmação, sujeita a prazo decadencial (4 anos em regra)',
+          'Conversão substancial: negócio nulo converte-se em válido se preencher requisitos de outro — art. 170',
+          'Redução: nulidade parcial não contamina a parte válida — art. 184',
+          'Prazo decadencial: 4 anos para coação; 2 anos para demais vícios — art. 178'
+        ],
+        note: 'Convalidação: o negócio anulável pode ser confirmado expressa ou tacitamente pelo interessado — art. 172. A confirmação não precisa ser expressa.'
+      }
+    ]
+  },
+  {
+    id: 11, num: '12', title: 'Prescrição e Decadência',
+    desc: 'Extinção de direitos e pretensões pelo decurso do tempo — prazos, causas de impedimento e interrupção.',
+    tags: ['Prescrição','Decadência','Prazo','Interrupção','Suspensão'],
+    topics: [
+      {
+        title: 'Prescrição — Conceito e Natureza',
+        content: 'A prescrição extingue a pretensão (poder de exigir em juízo) decorrente da violação de um direito subjetivo.',
+        items: [
+          'Pretensão: direito de exigir de outrem ação ou omissão — nasce com a violação do direito',
+          'Prazo geral: 10 anos (art. 205) — quando a lei não fixar prazo menor',
+          'Prescrição não extingue o direito, apenas a pretensão — pagamento espontâneo é válido',
+          'Renúncia à prescrição: somente após consumada; expressa ou tácita — art. 191',
+          'O juiz pode conhecer a prescrição de ofício (art. 193 — após reforma de 2006)',
+          'Reconhecimento pelo devedor: causa interrupção — art. 202, VI',
+          'Prescrição intercorrente: corre no curso do processo quando paralisado por inércia do autor'
+        ],
+        note: 'Prescrição × decadência: prescrição extingue a pretensão (direito de ação); decadência extingue o próprio direito. A confusão entre os institutos é tema frequente em prova.'
+      },
+      {
+        title: 'Causas de Impedimento e Suspensão',
+        content: 'Situações que paralisam temporariamente o curso do prazo prescricional.',
+        items: [
+          'Impedimento: prazo ainda não começou a fluir — ex: entre cônjuges na constância do casamento',
+          'Suspensão: prazo já iniciado paralisa e retoma de onde parou — arts. 197-201',
+          'Entre cônjuges e companheiros: suspensão na constância da união',
+          'Absolutamente incapazes: não corre prescrição — art. 198, I',
+          'Ausentes do país em serviço público: suspensão',
+          'Pendência de condição suspensiva ou ação de evicção: suspensão',
+          'Herdeiro contra espólio: suspensão enquanto durar a administração do inventariante'
+        ],
+        note: 'Impedimento e suspensão têm o mesmo efeito prático — o prazo para ou recomeça do ponto onde estava. Diferem apenas no momento: impedimento ocorre antes do início; suspensão, durante.'
+      },
+      {
+        title: 'Causas de Interrupção da Prescrição',
+        content: 'A interrupção apaga o prazo já transcorrido — recomeça a contagem do zero.',
+        items: [
+          'Citação válida: principal causa — art. 202, I; notificação ou interpelação judicial equivalem',
+          'Protesto cambial: interrompe para o devedor protestado',
+          'Reconhecimento da dívida pelo devedor: expresso ou tácito — art. 202, VI',
+          'Ato judicial que constitua em mora o devedor',
+          'Interrupção é pessoal: aproveita e prejudica apenas quem a promoveu (salvo solidariedade)',
+          'Pode ocorrer uma única vez — art. 202',
+          'Na solidariedade: interrupção contra um devedor solidário aproveita aos demais credores'
+        ],
+        note: 'Citação inválida ainda assim interrompe a prescrição se o devedor foi de qualquer modo cientificado (art. 202, parágrafo único CC).'
+      },
+      {
+        title: 'Decadência',
+        content: 'Extinção do próprio direito potestativo pelo decurso do tempo sem exercício.',
+        items: [
+          'Decadência extingue o direito (não apenas a pretensão) — ex: direito de anular negócio, de revogar doação',
+          'Decadência legal: pode ser conhecida de ofício pelo juiz — art. 210',
+          'Decadência convencional: não pode ser conhecida de ofício; renúncia admitida — art. 211',
+          'Não se aplicam impedimento nem interrupção à decadência legal (regra geral)',
+          'Prazos de anulabilidade são decadenciais: 4 anos (coação), 2 anos (outros vícios)',
+          'Prazo para rescindir partilha por dolo: 1 ano — art. 657',
+          'Reconhecimento do direito pelo devedor não interrompe decadência (diferente da prescrição)'
+        ],
+        note: 'Distinção fundamental: prescrição atinge a pretensão (direito de ação) — decadência atinge o próprio direito. A decadência "mata" o direito; a prescrição "paralisa" a pretensão.'
+      }
+    ]
+  },
+  {
+    id: 12, num: '13', title: 'Direito Administrativo',
+    desc: 'Organização e funcionamento da Administração Pública: atos, licitações, contratos e responsabilidade do Estado.',
+    tags: ['Ato Administrativo','Licitação','Contrato Administrativo','Servidor Público','Responsabilidade'],
+    topics: [
+      {
+        title: 'Ato Administrativo',
+        content: 'Manifestação unilateral de vontade da Administração que cria, modifica ou extingue direitos.',
+        items: [
+          'Elementos (art. 2º Lei 4.717/65): competência, finalidade, forma, motivo e objeto',
+          'Atributos: presunção de legitimidade, imperatividade, autoexecutoriedade, tipicidade',
+          'Atos vinculados × discricionários: vinculados têm todos os elementos fixados em lei',
+          'Mérito administrativo: conveniência e oportunidade — não revisável pelo Judiciário',
+          'Invalidação: anulação (vício de legalidade) × revogação (razões de mérito)',
+          'Convalidação: possível para vícios sanáveis de competência e forma',
+          'Silêncio administrativo: em regra não é ato, salvo quando a lei lhe atribuir efeito'
+        ],
+        note: 'Súmula 473 STF: Administração pode anular seus próprios atos quando ilegais; pode revogá-los por razões de conveniência ou oportunidade — respeitados direitos adquiridos.'
+      },
+      {
+        title: 'Licitação',
+        content: 'Procedimento administrativo para seleção da proposta mais vantajosa para contratos públicos — Lei 14.133/2021 (Nova Lei de Licitações).',
+        items: [
+          'Modalidades (Nova Lei): pregão, concorrência, concurso, leilão, diálogo competitivo',
+          'Dispensa de licitação: rol taxativo — obras até R$ 100 mil; serviços e compras até R$ 50 mil',
+          'Inexigibilidade: inviabilidade de competição — notória especialização, artistas consagrados',
+          'Critérios de julgamento: menor preço, maior desconto, melhor técnica, melhor conteúdo artístico, etc.',
+          'Fases: preparatória, divulgação, apresentação e julgamento, habilitação, recursal, homologação',
+          'Pregão eletrônico: obrigatório para bens e serviços comuns — mais célere',
+          'PNCP: Portal Nacional de Contratações Públicas — centralização das publicações'
+        ],
+        note: 'A Nova Lei de Licitações (14.133/2021) revogou a Lei 8.666/93, a Lei do Pregão (10.520/02) e o RDC (12.462/11) após período de transição.'
+      },
+      {
+        title: 'Contratos Administrativos e Concessões',
+        content: 'Acordos firmados pela Administração para execução de obras, serviços e alienações.',
+        items: [
+          'Cláusulas exorbitantes: alteração unilateral, rescisão, fiscalização, aplicação de penalidades',
+          'Equilíbrio econômico-financeiro: direito do contratado — base da proposta deve ser mantida',
+          'Teoria do fato do príncipe: ato geral do Poder Público que afeta o equilíbrio do contrato',
+          'Teoria da imprevisão: evento imprevisível e extraordinário — reajuste ou rescisão',
+          'Concessão comum: delegação de serviço público mediante remuneração pelo usuário — Lei 8.987/95',
+          'PPP (Lei 11.079/04): concessão patrocinada e administrativa — valor mínimo R$ 10 milhões',
+          'Subconcessão e subcontratação: dependem de autorização no contrato ou lei'
+        ],
+        note: 'A Administração não pode alterar unilateralmente cláusulas econômico-financeiras — apenas as regulamentares. O particular tem direito ao reequilíbrio quando o contrato é alterado unilateralmente.'
+      },
+      {
+        title: 'Responsabilidade Civil do Estado',
+        content: 'Obrigação do Estado de indenizar danos causados por seus agentes.',
+        items: [
+          'Teoria do risco administrativo: responsabilidade objetiva do Estado — art. 37, §6º CF',
+          'Elementos: dano + nexo causal + ação/omissão estatal — dispensa prova de culpa',
+          'Responsabilidade por omissão: subjetiva — exige culpa anônima (falha do serviço) ou culpa do agente',
+          'Excludentes: caso fortuito, força maior, culpa exclusiva da vítima, fato de terceiro',
+          'Teoria do risco integral: dano nuclear e dano ambiental — sem excludentes',
+          'Ação regressiva contra o agente: dolo ou culpa comprovados — art. 37, §6º CF',
+          'Prescrição: 5 anos para ações de reparação contra a Fazenda Pública (Dec. 20.910/32)'
+        ],
+        note: 'A responsabilidade objetiva é do Estado, não do agente — o lesado ajuíza contra o ente público; o Estado, se condenado, aciona regressivamente o agente culposo.'
+      }
+    ]
+  },
+  {
+    id: 13, num: '14', title: 'Direito Constitucional',
+    desc: 'Fundamentos do Estado Democrático de Direito, direitos fundamentais, organização estatal e controle de constitucionalidade.',
+    tags: ['Direitos Fundamentais','Controle de Constitucionalidade','Organização do Estado','Poder Constituinte','Federalismo'],
+    topics: [
+      {
+        title: 'Poder Constituinte e Princípios Fundamentais',
+        content: 'O poder constituinte originário funda a nova ordem jurídica; o derivado a modifica dentro dos limites impostos.',
+        items: [
+          'Poder constituinte originário: ilimitado, incondicionado, inaugural — não se sujeita ao ordenamento anterior',
+          'Poder constituinte derivado reformador: limitado por cláusulas pétreas — art. 60, §4º CF',
+          'Cláusulas pétreas: forma federativa, separação de poderes, direitos e garantias individuais, voto direto',
+          'Fundamentos da República (art. 1º): soberania, cidadania, dignidade da pessoa humana, valores sociais do trabalho e livre iniciativa, pluralismo político',
+          'Objetivos fundamentais (art. 3º): sociedade livre, justa e solidária; desenvolvimento; erradicação da pobreza; promoção do bem de todos',
+          'Princípio da supremacia da Constituição: norma ápice do ordenamento — hierarquia das normas',
+          'Bloco de constitucionalidade: CF + tratados de DH com quorum qualificado (art. 5º, §3º)'
+        ],
+        note: 'Emendas constitucionais são formalmente constitucionais, mas podem ser inconstitucionais se violarem cláusulas pétreas — o controle de constitucionalidade de emendas é possível.'
+      },
+      {
+        title: 'Direitos e Garantias Fundamentais',
+        content: 'O art. 5º CF consagra direitos individuais e coletivos — rol exemplificativo.',
+        items: [
+          'Características: universalidade, historicidade, inalienabilidade, imprescritibilidade, irrenunciabilidade',
+          'Gerações/dimensões: 1ª (liberdades negativas), 2ª (direitos sociais), 3ª (difusos), 4ª (democracia, informação)',
+          'Aplicabilidade: normas de eficácia plena, contida e limitada (José Afonso da Silva)',
+          'Mandado de segurança: direito líquido e certo — individual (MS) e coletivo (partido, entidade, sindicato)',
+          'Habeas corpus: liberdade de locomoção — preventivo ou repressivo',
+          'Habeas data: acesso a informações pessoais em bancos públicos',
+          'Mandado de injunção: omissão legislativa que inviabilize exercício de direito constitucional'
+        ],
+        note: 'Teoria dos quatro status de Jellinek: passivo (sujeição), negativo (liberdade), positivo (prestações), ativo (participação) — base para compreensão dos direitos fundamentais.'
+      },
+      {
+        title: 'Organização do Estado e dos Poderes',
+        content: 'A CF/88 adota a forma federativa de Estado e a república como forma de governo.',
+        items: [
+          'Federalismo cooperativo: repartição de competências — privativas (União), comuns (todos), concorrentes (U+E+DF)',
+          'Tripartição de poderes: Executivo, Legislativo e Judiciário — independentes e harmônicos',
+          'Processo legislativo: ordinárias, complementares, delegadas, medidas provisórias, emendas',
+          'Medidas provisórias: vigor imediato — prazo 60 + 60 dias; vedações do art. 62, §1º',
+          'Controle externo: TCU (Legislativo) — julgamento de contas dos administradores públicos federais',
+          'Ministério Público: função essencial à Justiça — autonomia e garantias constitucionais',
+          'Defensoria Pública: instrumento do regime democrático — art. 134 CF'
+        ],
+        note: 'O modelo presidencialista brasileiro concentra no Executivo a chefia de Estado e de governo — diferente do parlamentarismo, onde há separação dessas funções.'
+      },
+      {
+        title: 'Controle de Constitucionalidade',
+        content: 'Mecanismos para garantir a supremacia da Constituição sobre as demais normas.',
+        items: [
+          'Controle difuso: qualquer juiz pode afastar lei inconstitucional no caso concreto — efeitos inter partes',
+          'Controle concentrado: STF — efeitos erga omnes e vinculantes',
+          'ADI: impugna lei ou ato normativo federal ou estadual contrário à CF',
+          'ADC: declara constitucionalidade de lei federal — afasta controvérsia judicial',
+          'ADPF: arguição subsidiária — preceito fundamental; cabe contra ato pré-constitucional',
+          'ADO: omissão inconstitucional — ciência ao legislativo (60 dias para atos normativos)',
+          'Efeito repristinatório: declaração de inconstitucionalidade restaura lei anterior revogada'
+        ],
+        note: 'A modulação de efeitos temporais nas decisões de inconstitucionalidade (efeito ex nunc ou pro futuro) exige quórum de 2/3 do STF — art. 27 Lei 9.868/99.'
+      }
+    ]
+  },
+  {
+    id: 14, num: '15', title: 'Direito Penal — Parte Geral',
+    desc: 'Teoria do crime, tipicidade, ilicitude, culpabilidade, penas e medidas de segurança.',
+    tags: ['Tipicidade','Ilicitude','Culpabilidade','Dolo','Culpa','Penas'],
+    topics: [
+      {
+        title: 'Teoria do Crime',
+        content: 'Crime é fato típico, ilícito (antijurídico) e culpável — teoria tripartite adotada pelo CP.',
+        items: [
+          'Fato típico: conduta + resultado + nexo causal + tipicidade (formal e material)',
+          'Tipicidade material: relevância da conduta para o bem jurídico — afasta crimes de bagatela',
+          'Princípio da insignificância (STF): mínima ofensividade, ausência de periculosidade, inexpressividade do dano, reduzido grau de reprovabilidade',
+          'Dolo: consciência e vontade de realizar o tipo — direto (1º e 2º grau) e eventual',
+          'Culpa: inobservância do dever objetivo de cuidado — negligência, imprudência, imperícia',
+          'Crime omissivo impróprio (comissivo por omissão): garante (art. 13, §2º CP) — posição de garantidor',
+          'Relação de causalidade: teoria da equivalência das condições + imputação objetiva'
+        ],
+        note: 'A imputação objetiva (Roxin) exige que o agente crie ou aumente risco proibido e que o resultado seja a realização desse risco — limita a responsabilidade penal objetiva.'
+      },
+      {
+        title: 'Ilicitude e Culpabilidade',
+        content: 'Excludentes de ilicitude (justificantes) e de culpabilidade (dirimentes).',
+        items: [
+          'Legítima defesa: repelir injusta agressão atual ou iminente — moderação dos meios',
+          'Estado de necessidade: sacrifício de bem jurídico para salvar outro de maior ou igual valor',
+          'Estrito cumprimento do dever legal e exercício regular de direito: excludentes de ilicitude',
+          'Culpabilidade: imputabilidade + potencial consciência da ilicitude + exigibilidade de conduta diversa',
+          'Inimputabilidade: menores de 18 anos e doença mental que suprime a capacidade de entender ou querer',
+          'Semi-imputabilidade: redução de pena ou medida de segurança — art. 26, §único CP',
+          'Erro de proibição: desconhecimento da ilicitude — inevitável exclui culpabilidade; evitável reduz pena'
+        ],
+        note: 'Legítima defesa putativa: o agente imagina erroneamente estar em legítima defesa — é erro de tipo permissivo; se inevitável, exclui dolo e culpa (teoria limitada da culpabilidade).'
+      },
+      {
+        title: 'Concurso de Pessoas e Iter Criminis',
+        content: 'Participação de múltiplos agentes no crime e fases de desenvolvimento da conduta criminosa.',
+        items: [
+          'Iter criminis: cogitação → preparação → execução → consumação (ou tentativa)',
+          'Tentativa: início da execução sem consumação por circunstâncias alheias à vontade — art. 14, II',
+          'Desistência voluntária e arrependimento eficaz: o agente responde pelos atos já praticados — art. 15',
+          'Crime impossível: ineficácia absoluta do meio ou impropriedade absoluta do objeto — atipicidade',
+          'Autoria: quem executa o tipo; co-autoria: execução conjunta; participação: auxílio ou instigação',
+          'Teoria do domínio do fato: autor é quem domina o fato, não apenas quem executa materialmente',
+          'Comunicabilidade: elementares objetivas comunicam-se; circunstâncias pessoais não — art. 30'
+        ],
+        note: 'O mandante é autor mediato (domina o fato por meio do executor); o executor pode também ser autor se tiver domínio do fato — teoria do domínio do fato amplia o conceito de autoria.'
+      },
+      {
+        title: 'Penas e Aplicação da Pena',
+        content: 'Espécies de penas e critérios para sua dosimetria no sistema trifásico.',
+        items: [
+          'Penas privativas de liberdade: reclusão, detenção e prisão simples',
+          'Penas restritivas de direitos: substitutivas, com mesma duração — prestação de serviços, interdição, perda de bens',
+          'Pena de multa: dias-multa (10 a 360) × valor unitário (1/30 a 5 SM)',
+          'Sistema trifásico (Hungria): fase 1 — pena-base; fase 2 — atenuantes/agravantes; fase 3 — causas especiais',
+          'Circunstâncias judiciais (art. 59): culpabilidade, antecedentes, conduta social, personalidade, motivos, circunstâncias, consequências, comportamento da vítima',
+          'Regimes: fechado (> 8 anos), semiaberto (4-8 anos ou reincidente), aberto (≤ 4 anos)',
+          'Substituição por pena restritiva de direitos: pena ≤ 4 anos, crime não violento, não reincidente específico'
+        ],
+        note: 'O STJ uniformizou: o juiz não pode fixar regime mais gravoso que o cabível sem motivar concretamente — fundamentação genérica não justifica o regime fechado para penas baixas.'
+      }
+    ]
+  },
+  {
+    id: 15, num: '16', title: 'Direito Processual Civil',
+    desc: 'Teoria geral do processo civil, procedimentos, tutelas de urgência, execução e recursos.',
+    tags: ['Processo de Conhecimento','Tutela de Urgência','Execução','Recursos','CPC/2015'],
+    topics: [
+      {
+        title: 'Teoria Geral do Processo Civil',
+        content: 'O CPC/2015 consagrou um modelo cooperativo de processo, com ênfase na boa-fé processual e na efetividade da jurisdição.',
+        items: [
+          'Princípios: contraditório substancial, boa-fé processual, primazia do mérito, cooperação, duração razoável',
+          'Competência: absoluta (matéria, pessoa, função) × relativa (território, valor) — prorrogação e prevenção',
+          'Legitimidade: ad causam (titularidade da relação controvertida) × ad processum (capacidade de estar em juízo)',
+          'Interesse processual: necessidade + adequação do meio eleito',
+          'Litisconsórcio: necessário (simples ou unitário) × facultativo; intervenção de terceiros',
+          'IRDR (Incidente de Resolução de Demandas Repetitivas): uniformização de jurisprudência',
+          'Negócios jurídicos processuais: convenção das partes sobre o processo — art. 190 CPC'
+        ],
+        note: 'O modelo cooperativo do CPC/2015 impõe ao juiz deveres de consulta e diálogo — proibição de decisão-surpresa (art. 10): o juiz não pode decidir com base em fundamento não debatido pelas partes.'
+      },
+      {
+        title: 'Tutelas de Urgência e de Evidência',
+        content: 'Proteção provisória de direitos — antecipação dos efeitos da decisão final ou garantia do resultado.',
+        items: [
+          'Tutela de urgência: fumus boni iuris + periculum in mora — cautelar ou antecipada',
+          'Tutela antecipada antecedente: pedido autônomo; estabilização se não impugnada em 15 dias',
+          'Estabilização: mantém efeitos por 2 anos — qualquer das partes pode propor ação para rever',
+          'Tutela de evidência: dispensa urgência — prova documental inequívoca, tese firmada em repetitivo, abuso de defesa',
+          'Liminar em MS: prazo de 30 dias — precisa de urgência + probabilidade do direito',
+          'Medida de arrolamento de bens: garantia de futuro cumprimento',
+          'Astreintes (multa periódica): mecanismo de coerção para obrigações de fazer/não fazer e entrega — art. 537'
+        ],
+        note: 'A estabilização da tutela antecedente cria situação de "coisa julgada instável" — pode ser revisada por 2 anos, após o que a ação fica extinta sem resolução de mérito.'
+      },
+      {
+        title: 'Processo de Execução',
+        content: 'Satisfação forçada do crédito reconhecido em título executivo.',
+        items: [
+          'Títulos executivos judiciais: sentença condenatória, decisão homologatória, formal de partilha, etc.',
+          'Títulos executivos extrajudiciais: cheque, nota promissória, duplicata, instrumento de confissão de dívida',
+          'Execução de pagar: penhora → avaliação → expropriação (leilão/adjudicação/usufruto)',
+          'Impenhorabilidade: salário, bem de família, instrumentos de trabalho (lista art. 833 CPC)',
+          'Cumprimento de sentença: acréscimo de 10% se não pago espontaneamente + honorários — art. 523',
+          'Impugnação ao cumprimento de sentença: falta de pressuposto, ilegitimidade, inexigibilidade, excesso, nulidade',
+          'Execução fiscal: Lei 6.830/80 — exceção de pré-executividade, embargos à execução'
+        ],
+        note: 'O bem de família é o imóvel residencial do devedor (Lei 8.009/90) — impenhorável mesmo que seja o único bem de solteiro ou viúvo (Súmula 364 STJ).'
+      },
+      {
+        title: 'Recursos Cíveis',
+        content: 'Meios de impugnação das decisões judiciais no processo civil.',
+        items: [
+          'Apelação: sentença — prazo 15 dias; efeito suspensivo como regra; retratação em 15 dias',
+          'Agravo de instrumento: decisões interlocutórias do rol taxativo — art. 1.015 CPC',
+          'Agravo interno: decisões monocráticas nos tribunais — art. 1.021',
+          'Embargos de declaração: omissão, obscuridade, contradição ou erro material — prazo 5 dias',
+          'Recurso especial (STJ): violação de lei federal; dissídio jurisprudencial',
+          'Recurso extraordinário (STF): repercussão geral + violação constitucional',
+          'Efeito translativo: matérias de ordem pública conhecidas de ofício pelo tribunal mesmo sem recurso'
+        ],
+        note: 'O princípio da fungibilidade recursal permite receber um recurso erroneamente interposto por outro quando há dúvida objetiva e ausência de má-fé — aplica-se especialmente ao agravo de instrumento e à apelação.'
+      }
+    ]
+  },
+  {
+    id: 16, num: '17', title: 'Direito do Trabalho',
+    desc: 'Relação de emprego, direitos trabalhistas, rescisão contratual, jornada de trabalho e processo do trabalho.',
+    tags: ['Vínculo Empregatício','Jornada','FGTS','Rescisão','CLT'],
+    topics: [
+      {
+        title: 'Relação de Emprego e Contrato de Trabalho',
+        content: 'O contrato de trabalho caracteriza-se pela prestação de trabalho pessoal, subordinado, oneroso e não eventual.',
+        items: [
+          'Requisitos do vínculo empregatício: pessoalidade, não eventualidade, onerosidade, subordinação',
+          'Subordinação: jurídica (principal), econômica e técnica — critério distintivo do emprego',
+          'Empregado doméstico: Lei Complementar 150/2015 — direitos constitucionais equiparados',
+          'Trabalhador autônomo: ausência de subordinação — sem vínculo de emprego',
+          'Pejotização e terceirização: STF — lícita para qualquer atividade (ADPF 324/RE 958.252)',
+          'Contrato de trabalho intermitente: alternância de períodos de prestação e inatividade — Lei 13.467/17',
+          'Empregado hiperssuficiente: salário ≥ 2 × teto RGPS — negociação individual prevalece sobre lei'
+        ],
+        note: 'Princípio da primazia da realidade: prevalece o contrato de fato sobre o formal — contrato de prestação de serviços com subordinação gera vínculo de emprego independentemente da nomenclatura.'
+      },
+      {
+        title: 'Jornada de Trabalho e Remuneração',
+        content: 'Limites constitucionais à duração do trabalho e composição da remuneração.',
+        items: [
+          'Jornada normal: 8h diárias e 44h semanais — art. 7º, XIII CF',
+          'Hora extra: acréscimo mínimo de 50% — hora extra habitual integra a remuneração',
+          'Banco de horas: acordo coletivo compensa horas em até 1 ano; individual em até 6 meses',
+          'Intervalo intrajornada: ≥ 1h para jornadas > 6h — supressão gera indenização (≥ 50% da hora extra)',
+          'Adicional noturno: 20% para empregado urbano (22h-5h); rural: 25% (21h-5h) / 30% (20h-4h)',
+          'Adicional de insalubridade: 10%, 20% ou 40% do salário mínimo — graus mínimo, médio e máximo',
+          'Adicional de periculosidade: 30% sobre o salário-base — eletricitários, explosivos, substâncias inflamáveis'
+        ],
+        note: 'Súmula 437 TST: supressão do intervalo intrajornada gera pagamento de hora extra (com adicional de 50%) pelo período total do intervalo, não apenas pelo tempo suprimido.'
+      },
+      {
+        title: 'Rescisão Contratual e FGTS',
+        content: 'Modos de extinção do contrato de trabalho e garantias ao trabalhador.',
+        items: [
+          'Dispensa sem justa causa: aviso prévio + 13º proporcional + férias + 1/3 + 40% FGTS + saque do FGTS',
+          'Dispensa por justa causa (arts. 482-483 CLT): não recebe aviso, 40% FGTS nem saque',
+          'Pedido de demissão: aviso prévio; sem indenização do FGTS',
+          'Rescisão indireta (justa causa do empregador): art. 483 CLT — equipara-se à dispensa imotivada',
+          'FGTS: 8% sobre remuneração mensal — conta vinculada; saque nas hipóteses legais',
+          'Aviso prévio proporcional: 30 dias + 3 dias por ano de serviço — máximo 90 dias (Súmula 441 TST)',
+          'Seguro-desemprego: dispensa imotivada + não possui renda suficiente + não é beneficiário do RGPS'
+        ],
+        note: 'A Lei 13.467/2017 (Reforma Trabalhista) criou a rescisão por acordo (art. 484-A CLT): metade do aviso prévio + metade da multa de 40% FGTS + saque de 80% do FGTS.'
+      },
+      {
+        title: 'Processo do Trabalho',
+        content: 'Regras especiais do processo na Justiça do Trabalho — CLT + CPC subsidiário.',
+        items: [
+          'Competência: Justiça do Trabalho — relações de trabalho, sindicais, greve, questões decorrentes',
+          'Reclamação trabalhista: petição inicial + tentativa de conciliação (art. 846 CLT)',
+          'Jus postulandi: capacidade de postular sem advogado até o TRT (Súmula 425 TST — restrita)',
+          'Rito ordinário, sumaríssimo (até 40 SM) e sumário (até 2 SM)',
+          'Ônus da prova: em regra do reclamante; inversão quando documento está em poder do empregador',
+          'Recurso ordinário: prazo 8 dias; efeito meramente devolutivo',
+          'Execução trabalhista: autônoma ou ex officio — penhora online (BacenJud/RENAJUD)'
+        ],
+        note: 'A Súmula 331 TST sobre terceirização foi superada pelo julgamento do STF (ADPF 324) — terceirização é lícita para toda e qualquer atividade, inclusive atividade-fim.'
+      }
+    ]
+  },
+  {
+    id: 17, num: '18', title: 'Direito Digital e LGPD',
+    desc: 'Questões jurídicas no ambiente virtual: privacidade, LGPD, crimes digitais e contratos eletrônicos.',
+    tags: ['LGPD','Privacidade','Crimes Digitais','Contratos Eletrônicos','Marco Civil'],
+    topics: [
+      {
+        title: 'LGPD — Lei Geral de Proteção de Dados (Lei 13.709/2018)',
+        content: 'A LGPD regula o tratamento de dados pessoais por pessoas físicas e jurídicas de direito público e privado.',
+        items: [
+          'Dado pessoal: qualquer informação que identifique ou torne identificável uma pessoa natural',
+          'Dado sensível: origem racial, religião, saúde, biometria, vida sexual, orientação política — proteção reforçada',
+          'Bases legais para tratamento: consentimento, legítimo interesse, execução de contrato, cumprimento de obrigação legal, entre outras',
+          'Controlador: decide sobre o tratamento dos dados; Operador: realiza em nome do controlador',
+          'ANPD: Autoridade Nacional de Proteção de Dados — fiscalização e sanções',
+          'Direitos do titular: acesso, correção, portabilidade, eliminação, revogação do consentimento',
+          'Sanções: advertência, multa de até 2% do faturamento (limite R$ 50 milhões por infração), publicização'
+        ],
+        note: 'Incidente de segurança: controlador deve comunicar à ANPD e ao titular em prazo razoável — critério de relevância do risco.'
+      },
+      {
+        title: 'Marco Civil da Internet (Lei 12.965/2014)',
+        content: 'Estabelece princípios, garantias, direitos e deveres para o uso da internet no Brasil.',
+        items: [
+          'Neutralidade da rede: tratamento isonômico dos pacotes de dados, sem discriminação por conteúdo',
+          'Privacidade: proteção dos dados pessoais e das comunicações privadas',
+          'Responsabilidade dos provedores: de conexão × de aplicações — regras distintas',
+          'Provedor de aplicações: responsabilidade subsidiária por conteúdo de terceiros — somente após ordem judicial',
+          'Guarda de registros: conexão (1 ano) e aplicações (6 meses) — fornecimento mediante ordem judicial',
+          'Direito ao esquecimento: reconhecido com reservas pelo STJ e STF — não absoluto',
+          'Liberdade de expressão × privacidade: ponderação de direitos fundamentais'
+        ],
+        note: 'Fake news e discurso de ódio: responsabilidade do provedor após notificação extrajudicial específica (exceção à regra geral de ordem judicial).'
+      },
+      {
+        title: 'Crimes Digitais e Contratos Eletrônicos',
+        content: 'Ilícitos penais no ambiente virtual e validade dos negócios jurídicos eletrônicos.',
+        items: [
+          'Lei Carolina Dieckmann (Lei 12.737/2012): invasão de dispositivo informático — art. 154-A CP',
+          'Lei 12.965/2014: cyberbullying, divulgação não consentida de imagens íntimas',
+          'Estelionato digital: tipificado como estelionato qualificado (art. 171, §2º-A CP)',
+          'Validade do contrato eletrônico: declaração de vontade + meios que assegurem autoria e integridade',
+          'Assinatura digital: ICP-Brasil — presunção de autenticidade e integridade',
+          'Documento eletrônico: admitido como prova — art. 439 CPC',
+          'Comércio eletrônico (e-commerce): Dec. 7.962/2013 — informações obrigatórias, prazo de reflexão, SAC'
+        ],
+        note: 'A LGPD e o Marco Civil convivem: o Marco Civil regula o uso da internet; a LGPD regula o tratamento de dados pessoais em qualquer meio, inclusive digital.'
+      }
+    ]
+  }
+];
+
+
+// ─── QUIZ ────────────────────────────────────────────────────────────────────
+const questions = [
+  { q: 'Segundo o Código Civil, a personalidade civil da pessoa natural começa:', opts: ['Com a concepção', 'Com o nascimento com vida', 'Com o registro civil', 'Com 18 anos'], ans: 1, exp: 'Art. 1º CC — a personalidade começa com o nascimento com vida, embora os direitos do nascituro sejam protegidos desde a concepção.' },
+  { q: 'A incapacidade absoluta, após o Estatuto da Pessoa com Deficiência (Lei 13.146/2015), abrange apenas:', opts: ['Maiores de 16 e menores de 18', 'Menores de 16 anos', 'Pródigos', 'Ébrios habituais'], ans: 1, exp: 'Com a reforma de 2015, apenas os menores de 16 anos são absolutamente incapazes.' },
+  { q: 'A desconsideração da personalidade jurídica pela teoria maior exige:', opts: ['Apenas insolvência do devedor', 'Desvio de finalidade ou confusão patrimonial + insolvência', 'Mera impossibilidade de pagamento', 'Qualquer prejuízo ao credor'], ans: 1, exp: 'Teoria maior (CC art. 50): exige desvio de finalidade ou confusão patrimonial, além do prejuízo.' },
+  { q: 'Nos contratos, o princípio da boa-fé objetiva aplica-se:', opts: ['Apenas na fase de execução', 'Apenas na fase pré-contratual', 'Nas fases pré-contratual, de execução e pós-contratual', 'Somente nos contratos de consumo'], ans: 2, exp: 'Art. 422 CC — as partes devem guardar boa-fé objetiva antes, durante e depois do contrato (fase pós-contratual = duty to mitigate).' },
+  { q: 'A cláusula penal compensatória no Código Civil não pode exceder:', opts: ['50% do valor da obrigação', '100% do valor da obrigação', '200% do valor da obrigação', 'Não há limitação'], ans: 1, exp: 'Art. 412 CC — a pena convencional não pode exceder o valor da obrigação principal.' },
+  { q: 'A responsabilidade civil objetiva dispensa:', opts: ['O nexo de causalidade', 'O dano', 'A culpa', 'Todos os requisitos'], ans: 2, exp: 'A responsabilidade objetiva (teoria do risco) dispensa a prova de culpa, exigindo apenas conduta, nexo de causalidade e dano.' },
+  { q: 'O prazo prescricional geral no Código Civil é de:', opts: ['5 anos', '10 anos', '15 anos', '20 anos'], ans: 1, exp: 'Art. 205 CC — a prescrição ocorre em 10 anos quando a lei não lhe haja fixado prazo menor.' },
+  { q: 'Na usucapião extraordinária, o prazo é reduzido para 10 anos quando o possuidor:', opts: ['Paga IPTU regularmente', 'Estabeleceu moradia habitual ou realizou obras de caráter produtivo', 'Possui título de aquisição', 'Apresentou boa-fé'], ans: 1, exp: 'Art. 1.238 parágrafo único CC — posse com moradia habitual ou obras produtivas reduz o prazo de 15 para 10 anos.' },
+  { q: 'Na ordem de vocação hereditária do Código Civil, os colaterais são chamados na ausência de:', opts: ['Descendentes', 'Ascendentes', 'Cônjuge sobrevivente', 'Descendentes, ascendentes e cônjuge'], ans: 3, exp: 'Art. 1.829 CC — a ordem é: I – descendentes; II – ascendentes; III – cônjuge; IV – colaterais até 4º grau.' },
+  { q: 'No Código de Defesa do Consumidor, o prazo decadencial para reclamar vícios em produtos DURÁVEIS é:', opts: ['30 dias', '60 dias', '90 dias', '1 ano'], ans: 2, exp: 'Art. 26 CDC — vícios em produtos ou serviços: 30 dias para não-duráveis e 90 dias para duráveis.' },
+  { q: 'Qual teoria adota o Código Civil para definição da posse?', opts: ['Subjetiva de Savigny', 'Objetiva de Ihering', 'Eclética de Windscheid', 'Mista de Clóvis Beviláqua'], ans: 1, exp: 'O CC/2002 adotou a teoria objetiva de Ihering: não exige animus domini, bastando o comportamento de dono.' },
+  { q: 'O regime de bens supletivo no casamento brasileiro é:', opts: ['Comunhão universal', 'Separação de bens', 'Comunhão parcial de bens', 'Participação final nos aquestos'], ans: 2, exp: 'Art. 1.640 CC — na ausência de pacto antenupcial, aplica-se a comunhão parcial de bens.' },
+];
+
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+let quizQuestions = [], quizIdx = 0, quizScore = 0, selectedArea = 'all';
+let currentNoteKey = '';
+let currentSimuladoId = null, quizStartTime = 0, questionStartTime = 0;
+let quizTimerInterval = null;
+
+function formatTime(ms) {
+  const s = Math.floor(ms / 1000);
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  return String(m).padStart(2, '0') + ':' + String(sec).padStart(2, '0');
+}
+
+function startTimer() {
+  const display = document.getElementById('quiz-timer-display');
+  const wrap    = document.getElementById('quiz-timer');
+  if (!display) return;
+  if (quizTimerInterval) clearInterval(quizTimerInterval);
+  wrap.classList.remove('warn');
+  quizTimerInterval = setInterval(() => {
+    const elapsed = Date.now() - quizStartTime;
+    display.textContent = formatTime(elapsed);
+    // warn (amber) if over 10 min
+    if (elapsed >= 600000) wrap.classList.add('warn');
+  }, 1000);
+}
+
+function stopTimer() {
+  if (quizTimerInterval) { clearInterval(quizTimerInterval); quizTimerInterval = null; }
+}
+
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+function init() {
+  if(document.getElementById('classes-grid')) renderClasses();
+  if(document.getElementById('vade-toc')) renderVade();
+  if(document.getElementById('quiz-area-chips')) renderAreaChips();
+}
+
+function renderClasses() {
+  document.getElementById('classes-grid').innerHTML = classes.map(c => `
+    <div class="class-card" onclick="openTopic(${c.id})">
+      <div class="card-num">ÁREA ${c.num}</div>
+      <div class="card-title">${c.title}</div>
+      <div class="card-desc">${c.desc}</div>
+      <div class="card-topics">${c.tags.map(t=>`<span class="topic-tag">${t}</span>`).join('')}</div>
+    </div>
+  `).join('');
+}
+
+// ─── CURRENT CLASS STATE ─────────────────────────────────────────────────────
+function renderAreaChips() {
+  const areaChips = [{ id:'all', label:'Todas as áreas' }, ...classes.map(c=>({id:c.id, label:c.title}))];
+  document.getElementById('quiz-area-chips').innerHTML = areaChips.map(a => `
+    <div class="config-chip ${a.id==='all'?'selected':''}" onclick="selectArea(this,'${a.id}')">${a.label}</div>
+  `).join('');
+}
+
+function selectArea(el, area) {
+  document.querySelectorAll('.config-chip').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedArea = area;
+}
+
+async function startQuiz() {
+  const btn = document.getElementById('btn-comecar');
+  btn.disabled = true;
+
+  if (Auth.isLogado()) {
+    document.getElementById('quiz-start').style.display  = 'none';
+    document.getElementById('quiz-loading').style.display = 'block';
+    try {
+      const areaId = (selectedArea === 'all') ? 0 : parseInt(selectedArea) + 1;
+      const data   = await api.get(`/simulados/?action=questoes&area_id=${areaId}&total=8`);
+
+      if (!data.questoes || data.questoes.length === 0) {
+        document.getElementById('quiz-loading').style.display = 'none';
+        document.getElementById('quiz-start').style.display  = 'block';
+        btn.disabled = false;
+        alert('Nenhuma questão disponível para esta área.');
+        return;
+      }
+
+      quizQuestions = data.questoes.map(q => ({
+        id:     q.id,
+        q:      q.enunciado,
+        opts:   q.opcoes.map(o => o.texto),
+        ans:    q.opcoes.findIndex(o => o.correta),
+        exp:    q.explicacao || '',
+        opcoes: q.opcoes,
+      }));
+
+      if (data.reiniciou) {
+        // banco zerado — ciclo reiniciado silenciosamente
+        console.info('[Simulado] Banco de questões reiniciado para esta área.');
+      }
+
+      currentSimuladoId = await Simulados.iniciar(areaId || null, quizQuestions.length);
+    } catch (e) {
+      console.warn('[Simulado] API falhou, usando questões locais:', e.message);
+      quizQuestions     = [...questions].sort(() => Math.random() - 0.5).slice(0, 8);
+      currentSimuladoId = null;
+    }
+    document.getElementById('quiz-loading').style.display = 'none';
+  } else {
+    quizQuestions     = [...questions].sort(() => Math.random() - 0.5).slice(0, 8);
+    currentSimuladoId = null;
+  }
+
+  quizIdx = 0; quizScore = 0;
+  quizStartTime    = Date.now();
+  questionStartTime = Date.now();
+  btn.disabled = false;
+  document.getElementById('quiz-start').style.display  = 'none';
+  document.getElementById('quiz-active').style.display = 'block';
+  document.getElementById('quiz-result').style.display = 'none';
+  const timerDisplay = document.getElementById('quiz-timer-display');
+  if (timerDisplay) timerDisplay.textContent = '00:00';
+  startTimer();
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = quizQuestions[quizIdx];
+  document.getElementById('q-progress').style.width = (quizIdx / quizQuestions.length * 100) + '%';
+  document.getElementById('q-num').textContent      = `QUESTÃO ${quizIdx + 1} DE ${quizQuestions.length}`;
+  document.getElementById('q-text').textContent     = q.q;
+  document.getElementById('q-options').innerHTML    = q.opts.map((o, i) =>
+    `<button class="option" onclick="answer(this,${i})">${String.fromCharCode(65 + i)}) ${o}</button>`
+  ).join('');
+  document.getElementById('q-feedback').className = 'quiz-feedback';
+  document.getElementById('q-next').classList.remove('show');
+  document.getElementById('quiz-explanation').classList.remove('show');
+}
+
+function answer(el, idx) {
+  const q    = quizQuestions[quizIdx];
+  const opts = document.querySelectorAll('.option');
+  opts.forEach(o => o.classList.add('disabled'));
+  const fb      = document.getElementById('q-feedback');
+  const panel   = document.getElementById('quiz-explanation');
+  const correct = idx === q.ans;
+
+  if (correct) {
+    el.classList.add('correct');
+    quizScore++;
+    fb.textContent = '✓ Correto! ' + q.exp;
+    fb.className   = 'quiz-feedback correct-fb show';
+    panel.classList.remove('show');
+  } else {
+    el.classList.add('wrong');
+    opts[q.ans].classList.add('correct');
+    fb.textContent = '✗ Incorreto.';
+    fb.className   = 'quiz-feedback wrong-fb show';
+
+    document.getElementById('expl-correct-text').textContent = q.opts[q.ans];
+    document.getElementById('expl-body').textContent         = q.exp;
+    panel.classList.add('show');
+  }
+
+  document.getElementById('q-next').classList.add('show');
+
+  if (currentSimuladoId && q.id) {
+    const opcao_id = q.opcoes?.[idx]?.id ?? null;
+    const tempo_ms = Date.now() - questionStartTime;
+    Simulados.responder(currentSimuladoId, q.id, opcao_id, tempo_ms).catch(() => {});
+  }
+  questionStartTime = Date.now();
+}
+
+function nextQuestion() {
+  quizIdx++;
+  if(quizIdx>=quizQuestions.length) showResult();
+  else renderQuestion();
+}
+
+function showResult() {
+  stopTimer();
+  document.getElementById('quiz-active').style.display = 'none';
+  document.getElementById('quiz-result').style.display = 'block';
+  const pct = Math.round((quizScore / quizQuestions.length) * 100);
+  document.getElementById('q-score').textContent = pct + '%';
+  const msgs = ['Continue estudando!', 'Bom progresso!', 'Muito bom!', 'Excelente resultado!', 'Perfeito!'];
+  document.getElementById('q-score-msg').textContent =
+    `${quizScore} de ${quizQuestions.length} questões corretas. ${msgs[Math.min(Math.floor(pct / 25), 4)]}`;
+
+  if (currentSimuladoId) {
+    const tempo = Math.round((Date.now() - quizStartTime) / 1000);
+    Simulados.finalizar(currentSimuladoId, tempo)
+      .then(() => carregarHistorico())
+      .catch(() => {});
+    currentSimuladoId = null;
+  }
+}
+
+function resetQuiz() {
+  stopTimer();
+  currentSimuladoId = null;
+  document.getElementById('quiz-start').style.display  = 'block';
+  document.getElementById('quiz-active').style.display = 'none';
+  document.getElementById('quiz-result').style.display = 'none';
+}
+
+function fmtTempo(s) {
+  if (!s) return '—';
+  const m = Math.floor(s / 60), seg = s % 60;
+  return m > 0 ? `${m}m ${seg}s` : `${seg}s`;
+}
+
+function fmtData(str) {
+  if (!str) return '—';
+  const d = new Date(str.replace(' ', 'T'));
+  return d.toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit', year:'2-digit' });
+}
+
+async function carregarHistorico() {
+  if (!Auth.isLogado()) return;
+  try {
+    const hist = await Simulados.historico();
+    const sec  = document.getElementById('hist-section');
+    const body = document.getElementById('hist-body');
+    sec.style.display = '';
+
+    if (!hist || hist.length === 0) {
+      document.getElementById('hist-stats').innerHTML =
+        '<div class="hist-empty">Nenhum simulado concluído ainda.<br>Clique em <strong>Começar</strong> para iniciar seu primeiro treino!</div>';
+      return;
+    }
+
+    // ── Métricas gerais ──
+    const total       = hist.length;
+    const media       = hist.reduce((s, h) => s + h.porcentagem, 0) / total;
+    const melhor      = Math.max(...hist.map(h => h.porcentagem));
+    const totalQ      = hist.reduce((s, h) => s + h.total_questoes, 0);
+    const totalAcertos= hist.reduce((s, h) => s + h.acertos, 0);
+    const mediaColor  = media >= 70 ? 'var(--green)' : media >= 40 ? 'var(--accent)' : 'var(--red)';
+    const melhorColor = melhor >= 70 ? 'var(--green)' : melhor >= 40 ? 'var(--accent)' : 'var(--red)';
+
+    document.getElementById('hist-stats').innerHTML = `
+      <div class="hist-stat-card">
+        <div class="hist-stat-num">${total}</div>
+        <div class="hist-stat-label">Simulados feitos</div>
+      </div>
+      <div class="hist-stat-card">
+        <div class="hist-stat-num" style="color:${mediaColor}">${Math.round(media)}%</div>
+        <div class="hist-stat-label">Média geral</div>
+      </div>
+      <div class="hist-stat-card">
+        <div class="hist-stat-num" style="color:${melhorColor}">${Math.round(melhor)}%</div>
+        <div class="hist-stat-label">Melhor nota</div>
+      </div>
+      <div class="hist-stat-card">
+        <div class="hist-stat-num">${totalAcertos}<span style="font-size:14px;color:var(--text3)">/${totalQ}</span></div>
+        <div class="hist-stat-label">Total de acertos</div>
+      </div>`;
+
+    // ── Desempenho por área ──
+    const byArea = {};
+    hist.forEach(h => {
+      const key = h.area || 'Geral (todas as áreas)';
+      if (!byArea[key]) byArea[key] = { total: 0, acertos: 0 };
+      byArea[key].total   += h.total_questoes;
+      byArea[key].acertos += h.acertos;
+    });
+
+    const areas = Object.entries(byArea)
+      .map(([name, d]) => ({ name, pct: Math.round(d.acertos / d.total * 100) }))
+      .sort((a, b) => b.pct - a.pct);
+
+    if (areas.length > 0) {
+      document.getElementById('hist-areas-title').style.display = '';
+      document.getElementById('hist-area-bars').innerHTML = areas.map(a => {
+        const c = a.pct >= 70 ? 'var(--green)' : a.pct >= 40 ? 'var(--accent)' : 'var(--red)';
+        const shortName = a.name.replace(' — ', ' · ').replace('Parte Geral · ', '').substring(0, 30);
+        return `<div class="hist-area-row">
+          <div class="hist-area-name" title="${a.name}">${shortName}</div>
+          <div class="hist-area-bar-wrap">
+            <div class="hist-area-bar-fill" style="width:0%;background:${c}" data-pct="${a.pct}"></div>
+          </div>
+          <div class="hist-area-pct" style="color:${c}">${a.pct}%</div>
+        </div>`;
+      }).join('');
+
+      // Anima as barras com requestAnimationFrame
+      requestAnimationFrame(() => {
+        document.querySelectorAll('.hist-area-bar-fill').forEach(bar => {
+          bar.style.width = bar.dataset.pct + '%';
+        });
+      });
+    }
+
+    // ── Tabela histórico ──
+    document.getElementById('hist-table-title').style.display = '';
+    body.innerHTML = `
+      <table class="hist-table">
+        <thead><tr>
+          <th>Data</th><th>Área</th><th>Resultado</th><th>Acertos</th><th>Tempo</th>
+        </tr></thead>
+        <tbody>
+          ${hist.map(h => {
+            const cls = h.porcentagem >= 70 ? '' : h.porcentagem >= 40 ? 'mid' : 'low';
+            return `<tr>
+              <td>${fmtData(h.concluido_em)}</td>
+              <td>${h.area || 'Todas as áreas'}</td>
+              <td><span class="hist-score ${cls}">${Math.round(h.porcentagem)}%</span></td>
+              <td>${h.acertos}/${h.total_questoes}</td>
+              <td>${fmtTempo(h.tempo_segundos)}</td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>`;
+  } catch (_) {}
+}
+
+// ─── NAVIGATION ──────────────────────────────────────────────────────────────
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  const navMap = { home:'nav-home', estudar:'nav-estudar', topic:'nav-estudar', simulados:'nav-simulados', vade:'nav-vade' };
+  const navId = navMap[name];
+  if(navId) document.getElementById(navId).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+init();
+
+
+
+// ─── AUTH ─────────────────────────────────────────────────────────────────────
+function lexInitUser() {
+  const raw = localStorage.getItem('lex_user');
+  let user = raw ? JSON.parse(raw) : null;
+
+  if (!user) {
+    user = { nome: 'Visitante', plano: 'free' };
+  }
+
+  const nameEl = document.getElementById('user-name');
+  const planEl = document.getElementById('user-plan');
+  const avatarEl = document.getElementById('user-avatar');
+
+  if (nameEl) nameEl.textContent = user.nome;
+  if (planEl) {
+    planEl.textContent = user.plano === 'pro' ? 'Pro' : user.plano === 'anual' ? 'Pro Anual' : 'Gratuito';
+    if (user.plano !== 'free') planEl.style.background = 'rgba(201,168,76,0.2)';
+  }
+  if (avatarEl) avatarEl.textContent = (user.nome || 'V')[0].toUpperCase();
+}
+
+function lexLogout() {
+  if (confirm('Deseja sair da sua conta?')) {
+    try { fetch('/api/auth/?action=logout', { method: 'POST', headers: { 'X-Session-Token': localStorage.getItem('lex_token') || '' } }); } catch(_) {}
+    localStorage.removeItem('lex_user');
+    localStorage.removeItem('lex_token');
+    window.location.href = '../index.html';
+  }
+}
+
+// ─── PAGE INIT ───
+renderAreaChips(); lexInitUser(); carregarHistorico();
+
+// ─── THEME ───────────────────────────────────────────────────────────────────
+const MOON_ICON = `<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>`;
+const SUN_ICON  = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>`;
+
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'light' ? 'dark' : 'light';
+  applyTheme(next);
+}
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('lex_theme', theme);
+  if (typeof Auth !== 'undefined' && Auth.isLogado()) {
+    try { Auth.salvarTema(theme); } catch(_) {}
+  }
+  const icon = document.getElementById('theme-icon');
+  if (icon) {
+    icon.innerHTML = theme === 'light' ? SUN_ICON : MOON_ICON;
+  }
+}
+
+(function initTheme() {
+  const saved = localStorage.getItem('lex_theme') || 'dark';
+  applyTheme(saved);
+})();
+
+// ─── SETTINGS ────────────────────────────────────────────────────────────────
+function openSettings() {
+  const user = JSON.parse(localStorage.getItem('lex_user') || '{}');
+  document.getElementById('s-nome').value      = user.nome      || '';
+  document.getElementById('s-sobrenome').value = user.sobrenome || '';
+  document.getElementById('s-email').value     = user.email     || '';
+  document.getElementById('s-perfil-msg').className = 'smsg';
+  document.getElementById('s-perfil-msg').textContent = '';
+  document.getElementById('s-senha-msg').className  = 'smsg';
+  document.getElementById('s-senha-msg').textContent = '';
+  document.getElementById('s-senha-atual').value = '';
+  document.getElementById('s-senha-nova').value  = '';
+  document.getElementById('s-senha-conf').value  = '';
+  document.getElementById('settings-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSettings(e) {
+  if (e && e.target !== document.getElementById('settings-overlay')) return;
+  document.getElementById('settings-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function switchStab(el, id) {
+  document.querySelectorAll('.stab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.stab-body').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+
+async function salvarPerfil() {
+  const msg  = document.getElementById('s-perfil-msg');
+  const btn  = document.querySelector('#sperfil .sbtn');
+  const nome = document.getElementById('s-nome').value.trim();
+  const sobrenome = document.getElementById('s-sobrenome').value.trim();
+  const email = document.getElementById('s-email').value.trim();
+  msg.className = 'smsg'; msg.textContent = '';
+  if (!nome) { msg.className = 'smsg err'; msg.textContent = 'Nome é obrigatório.'; return; }
+  btn.disabled = true;
+  try {
+    const data = await api.put('/auth/?action=atualizar_perfil', { nome, sobrenome, email });
+    localStorage.setItem('lex_user', JSON.stringify(data.usuario));
+    lexInitUser();
+    msg.className = 'smsg ok'; msg.textContent = '✓ Perfil atualizado.';
+  } catch (err) { msg.className = 'smsg err'; msg.textContent = err.message; }
+  btn.disabled = false;
+}
+
+async function salvarSenha() {
+  const msg   = document.getElementById('s-senha-msg');
+  const btn   = document.querySelector('#sseguranca .sbtn');
+  const atual = document.getElementById('s-senha-atual').value;
+  const nova  = document.getElementById('s-senha-nova').value;
+  const conf  = document.getElementById('s-senha-conf').value;
+  msg.className = 'smsg'; msg.textContent = '';
+  if (!atual || !nova) { msg.className = 'smsg err'; msg.textContent = 'Preencha todos os campos.'; return; }
+  if (nova !== conf)   { msg.className = 'smsg err'; msg.textContent = 'As senhas não coincidem.'; return; }
+  if (nova.length < 6) { msg.className = 'smsg err'; msg.textContent = 'Mínimo 6 caracteres.'; return; }
+  btn.disabled = true;
+  try {
+    await api.put('/auth/?action=alterar_senha', { senha_atual: atual, senha_nova: nova });
+    msg.className = 'smsg ok'; msg.textContent = '✓ Senha alterada.';
+    ['s-senha-atual','s-senha-nova','s-senha-conf'].forEach(id => document.getElementById(id).value = '');
+  } catch (err) { msg.className = 'smsg err'; msg.textContent = err.message; }
+  btn.disabled = false;
+}
+
+</script>
+
+<div class="settings-overlay" id="settings-overlay" onclick="closeSettings(event)">
+  <div class="settings-modal" onclick="event.stopPropagation()">
+    <div class="settings-header">
+      <div class="settings-title">Configurações</div>
+      <button class="settings-close" onclick="closeSettings()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="settings-tabs">
+      <button class="stab active" onclick="switchStab(this,'sperfil')">Perfil</button>
+      <button class="stab" onclick="switchStab(this,'sseguranca')">Segurança</button>
+    </div>
+    <div class="stab-body active" id="sperfil">
+      <div class="sfield"><label class="slabel">Nome</label>
+        <input class="sinput" id="s-nome" type="text"></div>
+      <div class="sfield"><label class="slabel">Sobrenome</label>
+        <input class="sinput" id="s-sobrenome" type="text"></div>
+      <div class="sfield"><label class="slabel">E-mail</label>
+        <input class="sinput" id="s-email" type="email"></div>
+      <div class="smsg" id="s-perfil-msg"></div>
+      <button class="sbtn" onclick="salvarPerfil()">Salvar perfil</button>
+    </div>
+    <div class="stab-body" id="sseguranca">
+      <div class="sfield"><label class="slabel">Senha atual</label>
+        <input class="sinput" id="s-senha-atual" type="password"></div>
+      <div class="sfield"><label class="slabel">Nova senha</label>
+        <input class="sinput" id="s-senha-nova" type="password"></div>
+      <div class="sfield"><label class="slabel">Confirmar nova senha</label>
+        <input class="sinput" id="s-senha-conf" type="password"></div>
+      <div class="smsg" id="s-senha-msg"></div>
+      <button class="sbtn" onclick="salvarSenha()">Alterar senha</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

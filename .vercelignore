@@ -1,0 +1,8 @@
+api/**/*.php
+popular_questoes.php
+popular_topicos.php
+importar_cc.php
+setup.php
+lex_studio.db
+lex_studio.sql
+.env

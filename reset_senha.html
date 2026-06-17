@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Redefinir Senha — Lex Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0c0f; --s1: #111318; --s2: #191c24; --bd: #262b36;
+  --gold: #c9a84c; --gold2: #e8c97a; --text: #eeebe2; --t2: #8e8b82; --t3: #4a4844;
+  --red: #c94c4c; --green: #4caa74;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); min-height:100vh;
+       display:flex; align-items:center; justify-content:center; padding:24px; }
+.card {
+  background:var(--s1); border:1px solid var(--bd); border-radius:16px;
+  padding:48px; width:100%; max-width:440px;
+  box-shadow:0 32px 80px rgba(0,0,0,0.6);
+}
+.logo { display:flex; align-items:center; gap:10px; margin-bottom:32px; }
+.logo-icon {
+  width:40px; height:40px; background:linear-gradient(135deg,var(--gold),var(--gold2));
+  border-radius:10px; display:flex; align-items:center; justify-content:center;
+}
+.logo-text { font-family:'Playfair Display',serif; font-size:20px; font-weight:900; }
+h2 { font-family:'Playfair Display',serif; font-size:24px; font-weight:900; margin-bottom:8px; }
+.sub { color:var(--t2); font-size:14px; margin-bottom:28px; line-height:1.6; }
+.field { display:flex; flex-direction:column; gap:6px; margin-bottom:16px; }
+.label { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--t2);
+         text-transform:uppercase; letter-spacing:0.1em; }
+.input {
+  width:100%; padding:12px 16px; background:var(--s2); border:1px solid var(--bd);
+  border-radius:8px; color:var(--text); font-family:'Inter',sans-serif; font-size:14px;
+  outline:none; transition:border-color 0.2s;
+}
+.input:focus { border-color:var(--gold); }
+.btn {
+  width:100%; padding:14px; margin-top:8px;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  color:#0b0c0f; border:none; border-radius:8px;
+  font-family:'Playfair Display',serif; font-size:17px; font-weight:700;
+  cursor:pointer; transition:all 0.25s;
+}
+.btn:hover { box-shadow:0 8px 28px rgba(201,168,76,0.4); transform:translateY(-1px); }
+.btn:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
+.msg { font-size:13px; margin-top:-8px; margin-bottom:4px; display:none; }
+.msg.error { color:var(--red); }
+.msg.success { color:var(--green); }
+.back { display:block; text-align:center; margin-top:20px; color:var(--t2);
+        font-size:13px; text-decoration:none; transition:color 0.2s; }
+.back:hover { color:var(--gold); }
+.invalid-block { text-align:center; display:none; padding:24px 0; }
+.invalid-block h3 { font-family:'Playfair Display',serif; font-size:20px; margin-bottom:8px; color:var(--red); }
+.invalid-block p { color:var(--t2); font-size:14px; line-height:1.6; margin-bottom:20px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">
+    <div class="logo-icon">
+      <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+        <path d="M16 3L5 9v8c0 7 4.8 12.5 11 14 6.2-1.5 11-7 11-14V9L16 3z" stroke="#0b0c0f" stroke-width="1.5" fill="none"/>
+        <path d="M11 16l3 3 7-7" stroke="#0b0c0f" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <span class="logo-text">Lex Studio</span>
+  </div>
+
+  <div id="form-block">
+    <h2>Redefinir Senha</h2>
+    <p class="sub">Digite sua nova senha abaixo. O link é válido por 1 hora.</p>
+    <div class="field">
+      <label class="label">Nova Senha</label>
+      <input class="input" id="senha" type="password" placeholder="Mínimo 6 caracteres" autocomplete="new-password">
+    </div>
+    <div class="field">
+      <label class="label">Confirmar Senha</label>
+      <input class="input" id="senha2" type="password" placeholder="Repita a senha" autocomplete="new-password">
+    </div>
+    <div class="msg error" id="msg-error"></div>
+    <div class="msg success" id="msg-success"></div>
+    <button class="btn" id="btn-reset" onclick="handleReset()">Redefinir senha</button>
+    <a class="back" href="index.html">← Voltar ao login</a>
+  </div>
+
+  <div class="invalid-block" id="invalid-block">
+    <h3>Link inválido</h3>
+    <p>Este link de recuperação é inválido ou já expirou.<br>Solicite um novo na tela de login.</p>
+    <a class="btn" href="index.html" style="display:inline-block;text-decoration:none;padding:12px 32px;width:auto">Ir para o login →</a>
+  </div>
+</div>
+
+<script>
+const token = new URLSearchParams(window.location.search).get('token');
+
+if (!token) {
+  document.getElementById('form-block').style.display = 'none';
+  document.getElementById('invalid-block').style.display = 'block';
+}
+
+async function handleReset() {
+  const senha  = document.getElementById('senha').value;
+  const senha2 = document.getElementById('senha2').value;
+  const errEl  = document.getElementById('msg-error');
+  const okEl   = document.getElementById('msg-success');
+  const btn    = document.getElementById('btn-reset');
+
+  errEl.style.display = 'none';
+  okEl.style.display  = 'none';
+
+  if (!senha || senha.length < 6) {
+    errEl.textContent = 'A senha deve ter no mínimo 6 caracteres.';
+    errEl.style.display = 'block'; return;
+  }
+  if (senha !== senha2) {
+    errEl.textContent = 'As senhas não coincidem.';
+    errEl.style.display = 'block'; return;
+  }
+
+  btn.disabled = true; btn.textContent = 'Aguarde…';
+
+  try {
+    const res  = await fetch('api/auth/?action=resetar_senha', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, senha }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.mensagem || 'Erro ao redefinir senha.');
+
+    okEl.textContent    = '✓ Senha redefinida! Redirecionando para o login…';
+    okEl.style.display  = 'block';
+    btn.style.display   = 'none';
+    setTimeout(() => { window.location.href = 'index.html'; }, 2000);
+  } catch (err) {
+    errEl.textContent    = err.message;
+    errEl.style.display  = 'block';
+    btn.disabled         = false;
+    btn.textContent      = 'Redefinir senha';
+
+    if (err.message.includes('inválido') || err.message.includes('expirado')) {
+      document.getElementById('form-block').style.display   = 'none';
+      document.getElementById('invalid-block').style.display = 'block';
+    }
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') handleReset();
+});
+</script>
+</body>
+</html>

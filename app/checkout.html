@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout — Lex Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0c0f;
+  --s1: #111318;
+  --s2: #191c24;
+  --s3: #21252f;
+  --bd: #262b36;
+  --gold: #c9a84c;
+  --gold2: #e8c97a;
+  --text: #eeebe2;
+  --t2: #8e8b82;
+  --t3: #4a4844;
+  --red: #c94c4c;
+  --green: #4caa74;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+/* ── HEADER ── */
+.header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 40px; border-bottom:1px solid var(--bd);
+  background:var(--s1); position:sticky; top:0; z-index:10;
+}
+.header-logo {
+  display:flex; align-items:center; gap:10px;
+  font-family:'Playfair Display',serif; font-size:18px; font-weight:900;
+  color:var(--gold); text-decoration:none;
+}
+.header-logo svg { flex-shrink:0; }
+.header-back {
+  display:flex; align-items:center; gap:6px;
+  color:var(--t2); font-size:14px; text-decoration:none;
+  transition:color .15s;
+}
+.header-back:hover { color:var(--text); }
+.header-security { display:flex; align-items:center; gap:6px; font-size:13px; color:var(--t2); }
+.header-security svg { color:var(--green); }
+
+/* ── LAYOUT ── */
+.checkout-layout {
+  max-width:980px; margin:0 auto; padding:48px 24px;
+  display:grid; grid-template-columns:1fr 420px; gap:32px; align-items:start;
+}
+@media(max-width:760px) { .checkout-layout { grid-template-columns:1fr; } }
+
+/* ── CARD ── */
+.card {
+  background:var(--s1); border:1px solid var(--bd); border-radius:14px; padding:32px;
+}
+.card-title {
+  font-family:'Playfair Display',serif; font-size:20px; font-weight:900;
+  margin-bottom:24px; color:var(--text);
+}
+
+/* ── PLAN SUMMARY ── */
+.plan-badge {
+  display:inline-block; padding:3px 10px; background:rgba(201,168,76,.15);
+  border:1px solid rgba(201,168,76,.3); border-radius:20px;
+  font-size:11px; color:var(--gold); font-weight:600; margin-bottom:16px;
+}
+.plan-name { font-family:'Playfair Display',serif; font-size:28px; font-weight:900; color:var(--text); }
+.plan-price-row { display:flex; align-items:baseline; gap:4px; margin:8px 0 20px; }
+.plan-price-curr { font-size:16px; color:var(--gold); }
+.plan-price-val  { font-size:40px; font-weight:700; color:var(--gold); line-height:1; }
+.plan-price-per  { font-size:14px; color:var(--t2); }
+.plan-features-list { list-style:none; display:flex; flex-direction:column; gap:10px; margin-bottom:24px; }
+.plan-feature { display:flex; align-items:center; gap:10px; font-size:14px; color:var(--t2); }
+.plan-feature .icon { color:var(--green); font-size:16px; flex-shrink:0; }
+.plan-divider { height:1px; background:var(--bd); margin:20px 0; }
+.plan-total-row { display:flex; justify-content:space-between; align-items:center; }
+.plan-total-label { font-size:14px; color:var(--t2); }
+.plan-total-val { font-size:22px; font-weight:700; color:var(--gold); }
+.plan-guarantee {
+  display:flex; align-items:center; gap:8px; margin-top:16px;
+  padding:12px 14px; background:rgba(76,170,116,.08);
+  border:1px solid rgba(76,170,116,.2); border-radius:8px;
+  font-size:12px; color:var(--green); line-height:1.5;
+}
+
+/* ── PAYMENT FORM ── */
+.field-group { margin-bottom:18px; }
+.field-label { display:block; font-size:12px; color:var(--t2); margin-bottom:6px; font-weight:500; }
+.field-input {
+  width:100%; background:var(--s2); border:1px solid var(--bd); border-radius:8px;
+  padding:12px 14px; color:var(--text); font-size:14px; font-family:inherit;
+  transition:border-color .15s;
+}
+.field-input:focus { outline:none; border-color:var(--gold); }
+.field-input.error { border-color:var(--red); }
+.field-input::placeholder { color:var(--t3); }
+.field-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.field-row-3 { display:grid; grid-template-columns:1fr 100px 80px; gap:12px; }
+
+.card-preview {
+  background:linear-gradient(135deg,#1a1f2a,#21252f);
+  border:1px solid var(--bd); border-radius:12px;
+  padding:20px; margin-bottom:24px; font-family:'JetBrains Mono',monospace;
+  position:relative; overflow:hidden;
+}
+.card-preview::before {
+  content:''; position:absolute; right:-30px; top:-30px;
+  width:120px; height:120px; border-radius:50%;
+  background:rgba(201,168,76,.05);
+}
+.card-chip { font-size:22px; margin-bottom:16px; }
+.card-number-preview { font-size:16px; letter-spacing:2px; color:var(--text); margin-bottom:12px; }
+.card-row { display:flex; justify-content:space-between; font-size:11px; color:var(--t2); }
+.card-row span { color:var(--text); font-size:13px; }
+
+/* ── MÉTODOS ── */
+.metodo-group { display:flex; gap:10px; margin-bottom:20px; }
+.metodo-btn {
+  flex:1; padding:10px 8px; background:var(--s2); border:1px solid var(--bd);
+  border-radius:8px; color:var(--t2); font-size:13px; cursor:pointer;
+  transition:all .15s; display:flex; align-items:center; justify-content:center; gap:6px;
+}
+.metodo-btn.active { background:rgba(201,168,76,.1); border-color:var(--gold); color:var(--gold); }
+.metodo-btn:hover:not(.active) { border-color:var(--t2); color:var(--text); }
+
+.pix-section {
+  text-align:center; padding:32px 20px;
+  border:1px dashed var(--bd); border-radius:10px; margin-bottom:20px;
+}
+.pix-code {
+  font-family:'JetBrains Mono',monospace; font-size:11px;
+  background:var(--s2); border:1px solid var(--bd); border-radius:6px;
+  padding:10px; margin:12px 0; word-break:break-all; color:var(--gold); cursor:pointer;
+}
+.boleto-section { padding:20px; background:var(--s2); border-radius:10px; margin-bottom:20px; text-align:center; }
+
+/* ── SUBMIT ── */
+.submit-btn {
+  width:100%; padding:15px; background:var(--gold); color:#0b0c0f;
+  border:none; border-radius:10px; font-size:15px; font-weight:700;
+  cursor:pointer; transition:background .15s; margin-top:4px;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.submit-btn:hover { background:var(--gold2); }
+.submit-btn:disabled { opacity:.5; cursor:not-allowed; }
+.error-msg { color:var(--red); font-size:13px; margin-top:8px; display:none; }
+.secure-note { text-align:center; font-size:12px; color:var(--t3); margin-top:14px; }
+
+/* ── PROCESSING ── */
+.processing-overlay {
+  display:none; position:fixed; inset:0; background:rgba(11,12,15,.85);
+  z-index:100; align-items:center; justify-content:center; flex-direction:column; gap:20px;
+}
+.processing-overlay.show { display:flex; }
+.spinner {
+  width:48px; height:48px; border:3px solid var(--bd);
+  border-top-color:var(--gold); border-radius:50%;
+  animation:spin .8s linear infinite;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+.processing-text { font-size:16px; color:var(--t2); }
+
+/* ── SUCCESS ── */
+.success-screen {
+  display:none; text-align:center; padding:48px 20px;
+}
+.success-screen.show { display:block; }
+.success-icon { font-size:64px; margin-bottom:20px; }
+.success-title { font-family:'Playfair Display',serif; font-size:28px; font-weight:900; margin-bottom:12px; }
+.success-sub { color:var(--t2); font-size:15px; margin-bottom:32px; line-height:1.6; }
+.success-btn {
+  display:inline-block; padding:14px 32px; background:var(--gold); color:#0b0c0f;
+  font-size:15px; font-weight:700; text-decoration:none; border-radius:10px;
+  transition:background .15s;
+}
+.success-btn:hover { background:var(--gold2); }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <a class="header-logo" href="../index.html">
+    <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
+      <path d="M16 3L5 9v8c0 7 4.8 12.5 11 14 6.2-1.5 11-7 11-14V9L16 3z" stroke="#c9a84c" stroke-width="1.5" fill="none"/>
+      <path d="M11 16l3 3 7-7" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    Lex Studio
+  </a>
+  <div class="header-security">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    Pagamento seguro
+  </div>
+  <a class="header-back" href="home.html">← Voltar</a>
+</header>
+
+<div class="checkout-layout" id="checkout-main">
+
+  <!-- COLUNA ESQUERDA: FORMULÁRIO -->
+  <div>
+    <div class="card" id="form-card">
+      <div class="card-title">Informações de pagamento</div>
+
+      <!-- Métodos -->
+      <div class="metodo-group">
+        <button class="metodo-btn active" onclick="setMetodo('cartao', this)">💳 Cartão</button>
+        <button class="metodo-btn" onclick="setMetodo('pix', this)">🔑 Pix</button>
+        <button class="metodo-btn" onclick="setMetodo('boleto', this)">📄 Boleto</button>
+      </div>
+
+      <!-- Cartão de crédito -->
+      <div id="section-cartao">
+        <div class="card-preview">
+          <div class="card-chip">▣</div>
+          <div class="card-number-preview" id="prev-number">•••• •••• •••• ••••</div>
+          <div class="card-row">
+            <div>
+              <div style="font-size:9px;color:var(--t3);margin-bottom:2px">TITULAR</div>
+              <span id="prev-nome">SEU NOME</span>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:9px;color:var(--t3);margin-bottom:2px">VALIDADE</div>
+              <span id="prev-validade">MM/AA</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Número do cartão</label>
+          <input class="field-input" id="card-number" type="text" placeholder="0000 0000 0000 0000"
+                 maxlength="19" inputmode="numeric" oninput="formatCard(this)" autocomplete="cc-number">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Nome no cartão</label>
+          <input class="field-input" id="card-nome" type="text" placeholder="JOÃO SILVA"
+                 oninput="document.getElementById('prev-nome').textContent = this.value.toUpperCase() || 'SEU NOME'"
+                 autocomplete="cc-name">
+        </div>
+        <div class="field-row">
+          <div class="field-group" style="margin-bottom:0">
+            <label class="field-label">Validade</label>
+            <input class="field-input" id="card-validade" type="text" placeholder="MM/AA"
+                   maxlength="5" oninput="formatValidade(this)" autocomplete="cc-exp">
+          </div>
+          <div class="field-group" style="margin-bottom:0">
+            <label class="field-label">CVV</label>
+            <input class="field-input" id="card-cvv" type="text" placeholder="•••"
+                   maxlength="4" inputmode="numeric" autocomplete="cc-csc">
+          </div>
+        </div>
+      </div>
+
+      <!-- Pix -->
+      <div id="section-pix" style="display:none">
+        <div class="pix-section">
+          <div style="font-size:40px;margin-bottom:8px">📱</div>
+          <div style="font-size:14px;font-weight:600;margin-bottom:4px">Pague com Pix</div>
+          <div style="font-size:13px;color:var(--t2);margin-bottom:16px">
+            Copie o código abaixo e cole no app do seu banco.<br>O acesso é liberado instantaneamente.
+          </div>
+          <div class="pix-code" onclick="copiarPix(this)"
+               title="Clique para copiar">
+            00020126580014BR.GOV.BCB.PIX0136lexstudio@pix.com.br5204000053039865802BR5925Lex Studio Educacao Ltda6009SAO PAULO62070503***6304ABCD
+          </div>
+          <div style="font-size:12px;color:var(--t3)">Clique no código para copiar</div>
+        </div>
+      </div>
+
+      <!-- Boleto -->
+      <div id="section-boleto" style="display:none">
+        <div class="boleto-section">
+          <div style="font-size:40px;margin-bottom:8px">📄</div>
+          <div style="font-size:14px;font-weight:600;margin-bottom:4px">Boleto bancário</div>
+          <div style="font-size:13px;color:var(--t2);margin-bottom:0">
+            O boleto será gerado após confirmar.<br>
+            Prazo de compensação: <strong style="color:var(--text)">até 3 dias úteis</strong>.
+          </div>
+        </div>
+      </div>
+
+      <div id="error-msg" class="error-msg"></div>
+
+      <button class="submit-btn" id="btn-submit" onclick="processar()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="11" width="18" height="11" rx="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+        <span id="btn-text">Finalizar pagamento</span>
+      </button>
+      <div class="secure-note">🔒 Dados protegidos com criptografia SSL 256-bit</div>
+    </div>
+
+    <!-- Sucesso -->
+    <div class="card success-screen" id="success-screen">
+      <div class="success-icon">✅</div>
+      <div class="success-title">Assinatura ativada!</div>
+      <div class="success-sub" id="success-text">
+        Bem-vindo ao plano <strong style="color:var(--gold)" id="success-plano"></strong>!<br>
+        Todos os recursos estão liberados na sua conta.
+      </div>
+      <a class="success-btn" href="home.html">Acessar plataforma →</a>
+    </div>
+  </div>
+
+  <!-- COLUNA DIREITA: RESUMO DO PLANO -->
+  <div>
+    <div class="card">
+      <div class="plan-badge">⭐ Mais popular</div>
+      <div class="plan-name" id="sum-nome">Pro</div>
+      <div class="plan-price-row">
+        <span class="plan-price-curr">R$</span>
+        <span class="plan-price-val" id="sum-preco">29</span>
+        <span class="plan-price-per" id="sum-per">/mês</span>
+      </div>
+      <ul class="plan-features-list" id="sum-features">
+        <li class="plan-feature"><span class="icon">✓</span> 12 áreas de Direito Civil completas</li>
+        <li class="plan-feature"><span class="icon">✓</span> Vade Mecum completo (2.082 artigos)</li>
+        <li class="plan-feature"><span class="icon">✓</span> Simulados ilimitados com gabarito</li>
+        <li class="plan-feature"><span class="icon">✓</span> Subpáginas detalhadas por tópico</li>
+        <li class="plan-feature"><span class="icon">✓</span> Anotações em todas as áreas</li>
+        <li class="plan-feature"><span class="icon">✓</span> Acesso à IA por tópico (Gemini)</li>
+        <li class="plan-feature"><span class="icon">✓</span> Histórico completo de simulados</li>
+        <li class="plan-feature"><span class="icon">✓</span> Sem anúncios</li>
+      </ul>
+      <div class="plan-divider"></div>
+      <div class="plan-total-row">
+        <div class="plan-total-label" id="sum-total-label">Total hoje</div>
+        <div class="plan-total-val" id="sum-total">R$ 29,90</div>
+      </div>
+      <div class="plan-guarantee">
+        🛡️ Garantia de 7 dias. Cancele quando quiser, sem burocracia.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROCESSING OVERLAY -->
+<div class="processing-overlay" id="processing">
+  <div class="spinner"></div>
+  <div class="processing-text">Processando pagamento…</div>
+</div>
+
+<script>
+const planos = {
+  pro:   { nome:'Pro',      preco:'29', per:'/mês',      total:'R$ 29,90',  totalLabel:'Total hoje',       valor:29.90, badge:'⭐ Mais popular' },
+  anual: { nome:'Pro Anual',preco:'19', per:'/mês',      total:'R$ 228,00', totalLabel:'Total (12 meses)', valor:228.00,badge:'💎 Melhor custo-benefício' },
+};
+
+let metodoAtual = 'cartao';
+let planoAtual  = 'pro';
+const TOKEN     = localStorage.getItem('lex_token');
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+(function init() {
+  if (!TOKEN) { window.location.href = '../index.html'; return; }
+
+  const p = new URLSearchParams(window.location.search).get('plano') || 'pro';
+  planoAtual = planos[p] ? p : 'pro';
+  renderPlano();
+})();
+
+function renderPlano() {
+  const d = planos[planoAtual];
+  document.querySelector('.plan-badge').textContent    = d.badge;
+  document.getElementById('sum-nome').textContent      = d.nome;
+  document.getElementById('sum-preco').textContent     = d.preco;
+  document.getElementById('sum-per').textContent       = d.per;
+  document.getElementById('sum-total').textContent     = d.total;
+  document.getElementById('sum-total-label').textContent = d.totalLabel;
+  document.getElementById('btn-text').textContent      = `Pagar ${d.total}`;
+  if (planoAtual === 'anual') {
+    document.getElementById('sum-features').innerHTML += `
+      <li class="plan-feature"><span class="icon">✓</span> <strong>35% de desconto</strong> vs. plano mensal</li>
+      <li class="plan-feature"><span class="icon">✓</span> Badge de membro fundador</li>
+    `;
+  }
+}
+
+// ── Método ────────────────────────────────────────────────────────────────────
+function setMetodo(m, btn) {
+  metodoAtual = m;
+  document.querySelectorAll('.metodo-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('section-cartao').style.display  = m === 'cartao'  ? '' : 'none';
+  document.getElementById('section-pix').style.display     = m === 'pix'     ? '' : 'none';
+  document.getElementById('section-boleto').style.display  = m === 'boleto'  ? '' : 'none';
+  const texts = { cartao:'Finalizar pagamento', pix:'Confirmar Pix', boleto:'Gerar boleto' };
+  document.getElementById('btn-text').textContent = texts[m];
+}
+
+// ── Formatação do cartão ──────────────────────────────────────────────────────
+function formatCard(el) {
+  let v = el.value.replace(/\D/g,'').slice(0,16);
+  el.value = v.replace(/(.{4})/g,'$1 ').trim();
+  const preview = v.padEnd(16,'•').replace(/(.{4})/g,'$1 ').trim();
+  document.getElementById('prev-number').textContent = preview;
+}
+
+function formatValidade(el) {
+  let v = el.value.replace(/\D/g,'').slice(0,4);
+  if (v.length >= 3) v = v.slice(0,2) + '/' + v.slice(2);
+  el.value = v;
+  document.getElementById('prev-validade').textContent = v || 'MM/AA';
+}
+
+// ── Validação ─────────────────────────────────────────────────────────────────
+function validarCartao() {
+  const num = document.getElementById('card-number').value.replace(/\s/g,'');
+  const nome = document.getElementById('card-nome').value.trim();
+  const val  = document.getElementById('card-validade').value;
+  const cvv  = document.getElementById('card-cvv').value;
+
+  if (num.length !== 16)      return 'Número do cartão inválido.';
+  if (nome.length < 3)        return 'Informe o nome como está no cartão.';
+  if (!/^\d{2}\/\d{2}$/.test(val)) return 'Validade inválida (use MM/AA).';
+  const [mm, aa] = val.split('/').map(Number);
+  if (mm < 1 || mm > 12)     return 'Mês inválido.';
+  const agora = new Date(); const aaAtual = agora.getFullYear() % 100;
+  if (aa < aaAtual || (aa === aaAtual && mm < agora.getMonth() + 1)) return 'Cartão vencido.';
+  if (cvv.length < 3)         return 'CVV inválido.';
+
+  return null;
+}
+
+// ── Processar ─────────────────────────────────────────────────────────────────
+async function processar() {
+  const errEl = document.getElementById('error-msg');
+  errEl.style.display = 'none';
+
+  if (metodoAtual === 'cartao') {
+    const err = validarCartao();
+    if (err) { errEl.textContent = err; errEl.style.display = 'block'; return; }
+  }
+
+  document.getElementById('btn-submit').disabled = true;
+  document.getElementById('processing').classList.add('show');
+
+  await new Promise(r => setTimeout(r, 2200)); // Simula processamento
+
+  const ultimos4 = metodoAtual === 'cartao'
+    ? document.getElementById('card-number').value.replace(/\s/g,'').slice(-4)
+    : '';
+
+  try {
+    const res  = await fetch('../api/pagamento/?action=assinar', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'X-Session-Token': TOKEN },
+      body: JSON.stringify({ plano: planoAtual, metodo: metodoAtual, ultimos4 }),
+    });
+    const data = await res.json();
+
+    document.getElementById('processing').classList.remove('show');
+
+    if (!res.ok) {
+      errEl.textContent   = data.mensagem || 'Erro ao processar pagamento.';
+      errEl.style.display = 'block';
+      document.getElementById('btn-submit').disabled = false;
+      return;
+    }
+
+    // Atualiza plano no localStorage
+    const user = JSON.parse(localStorage.getItem('lex_user') || '{}');
+    user.plano = planoAtual;
+    localStorage.setItem('lex_user', JSON.stringify(user));
+
+    document.getElementById('form-card').style.display = 'none';
+    document.getElementById('success-plano').textContent = planos[planoAtual].nome;
+    document.getElementById('success-screen').classList.add('show');
+
+  } catch (_) {
+    document.getElementById('processing').classList.remove('show');
+    errEl.textContent   = 'Erro de conexão. Verifique sua internet e tente novamente.';
+    errEl.style.display = 'block';
+    document.getElementById('btn-submit').disabled = false;
+  }
+}
+
+function copiarPix(el) {
+  navigator.clipboard.writeText(el.textContent.trim()).then(() => {
+    el.style.color = 'var(--green)';
+    el.title = 'Copiado!';
+    setTimeout(() => { el.style.color = ''; el.title = 'Clique para copiar'; }, 2000);
+  });
+}
+</script>
+</body>
+</html>
