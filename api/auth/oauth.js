@@ -17,6 +17,17 @@ function googleConfigured() {
 module.exports = async function handler(req, res) {
   const action = req.query?.action || ''
 
+  // ── Debug (remover após diagnóstico) ──────────────────────────────────────
+  if (action === 'debug') {
+    res.writeHead(200, { 'Content-Type': 'application/json' })
+    return res.end(JSON.stringify({
+      APP_URL: APP_URL(),
+      redirect_uri: getRedirectUri(),
+      client_id_set: !!process.env.GOOGLE_CLIENT_ID,
+      client_secret_set: !!process.env.GOOGLE_CLIENT_SECRET,
+    }))
+  }
+
   // ── Iniciar OAuth ──────────────────────────────────────────────────────────
   if (action === 'init') {
     if (!googleConfigured()) {
