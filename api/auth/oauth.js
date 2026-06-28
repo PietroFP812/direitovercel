@@ -17,29 +17,6 @@ function googleConfigured() {
 module.exports = async function handler(req, res) {
   const action = req.query?.action || ''
 
-  // ── Debug (remover após diagnóstico) ──────────────────────────────────────
-  if (action === 'debug') {
-    const clientId = process.env.GOOGLE_CLIENT_ID || ''
-    const params = new URLSearchParams({
-      client_id: clientId,
-      redirect_uri: getRedirectUri(),
-      response_type: 'code',
-      scope: 'openid email profile',
-      state: 'debug_state',
-      access_type: 'online',
-      prompt: 'select_account'
-    })
-    res.writeHead(200, { 'Content-Type': 'application/json' })
-    return res.end(JSON.stringify({
-      APP_URL: APP_URL(),
-      redirect_uri: getRedirectUri(),
-      client_id_prefix: clientId.substring(0, 20) + '...',
-      client_id_length: clientId.length,
-      client_secret_set: !!process.env.GOOGLE_CLIENT_SECRET,
-      google_url: `https://accounts.google.com/o/oauth2/v2/auth?${params}`
-    }))
-  }
-
   // ── Iniciar OAuth ──────────────────────────────────────────────────────────
   if (action === 'init') {
     if (!googleConfigured()) {
