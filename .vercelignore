@@ -3,6 +3,7 @@ popular_questoes.php
 popular_topicos.php
 importar_cc.php
 setup.php
+seed/
 lex_studio.db
 lex_studio.sql
 .env

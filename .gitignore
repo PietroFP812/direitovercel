@@ -1,2 +1,5 @@
 .env
 lex_studio.db
+
+.vercel
+.env*

@@ -16,12 +16,14 @@ module.exports = async function handler(req, res) {
   setCorsHeaders(res)
   if (req.method === 'OPTIONS') return res.status(200).end()
 
-  const action = req.query?.action || ''
   const sql = getDB()
+  const user = await getUsuarioAutenticado(req, res, sql)
+  if (!user) return
+
+  const action = req.query?.action || ''
 
   // ── GET estrutura completa ───────────────────────────────────────────────────
   if (req.method === 'GET' && action === '') {
-    await getUsuarioAutenticado(req, res, sql)
     const partes = await sql`SELECT id, codigo, titulo, subtitulo, range_arts FROM vade_partes ORDER BY ordem`
 
     for (const parte of partes) {
@@ -38,7 +40,6 @@ module.exports = async function handler(req, res) {
 
   // ── GET estrutura (TOC) ──────────────────────────────────────────────────────
   if (req.method === 'GET' && action === 'estrutura') {
-    await getUsuarioAutenticado(req, res, sql)
     const partes = await sql`SELECT id, codigo, titulo, subtitulo, range_arts FROM vade_partes ORDER BY ordem`
     for (const parte of partes) {
       parte.capitulos = await sql`SELECT id, titulo FROM vade_capitulos WHERE parte_id = ${parte.id} ORDER BY ordem`
@@ -48,7 +49,6 @@ module.exports = async function handler(req, res) {
 
   // ── GET por_parte ────────────────────────────────────────────────────────────
   if (req.method === 'GET' && action === 'por_parte') {
-    await getUsuarioAutenticado(req, res, sql)
     const parte_id = parseInt(req.query?.parte_id || '0')
     if (!parte_id) return respondError(res, 'parte_id é obrigatório.')
 
@@ -63,7 +63,6 @@ module.exports = async function handler(req, res) {
 
   // ── GET buscar ───────────────────────────────────────────────────────────────
   if (req.method === 'GET' && action === 'buscar') {
-    await getUsuarioAutenticado(req, res, sql)
     const q = (req.query?.q || '').trim()
     if (q.length < 2) return respondError(res, 'Digite pelo menos 2 caracteres.')
 
@@ -83,8 +82,6 @@ module.exports = async function handler(req, res) {
 
   // ── POST favoritar ───────────────────────────────────────────────────────────
   if (req.method === 'POST' && action === 'favoritar') {
-    const user = await getUsuarioAutenticado(req, res, sql)
-    if (!user) return
     const body = await getBody(req)
     const artigo_id = parseInt(body.artigo_id || '0')
     if (!artigo_id) return respondError(res, 'artigo_id é obrigatório.')
@@ -98,8 +95,6 @@ module.exports = async function handler(req, res) {
 
   // ── DELETE favoritar ─────────────────────────────────────────────────────────
   if (req.method === 'DELETE' && action === 'favoritar') {
-    const user = await getUsuarioAutenticado(req, res, sql)
-    if (!user) return
     const artigo_id = parseInt(req.query?.artigo_id || '0')
     if (!artigo_id) return respondError(res, 'artigo_id é obrigatório.')
 
@@ -109,9 +104,6 @@ module.exports = async function handler(req, res) {
 
   // ── GET favoritos ────────────────────────────────────────────────────────────
   if (req.method === 'GET' && action === 'favoritos') {
-    const user = await getUsuarioAutenticado(req, res, sql)
-    if (!user) return
-
     const favs = await sql`
       SELECT va.id, va.numero, va.caput
       FROM favoritos_artigos fa

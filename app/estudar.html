@@ -2855,11 +2855,14 @@ function openSubpage(classId, topicIdx) {
   document.getElementById('subpage-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
   if (Auth.isLogado()) {
-    const topico_id = classes.slice(0, classId).reduce((s, c) => s + c.topics.length, 0) + topicIdx + 1;
-    Areas.marcarTopico(topico_id).then(() => {
-      const dot = document.querySelector(`#ti-${classId}-${topicIdx} .dot`);
-      if (dot) dot.classList.add('visto');
-    }).catch(() => {});
+    const topico_id = _cachedTopicosDB[topicIdx]?.id;
+    if (topico_id) {
+      Areas.marcarTopico(topico_id).then(() => {
+        const dot = document.querySelector(`#ti-${classId}-${topicIdx} .dot`);
+        if (dot) dot.classList.add('visto');
+        loadProgressGlobal();
+      }).catch(() => {});
+    }
     loadRevState();
   }
 }
@@ -2951,7 +2954,8 @@ function spNavigate(dir) {
     document.getElementById('sp-body').scrollTop = 0;
     currentRevState = false; updateRevBtn();
     if (Auth.isLogado()) {
-      Areas.marcarTopico(classes.slice(0, currentClassId).reduce((s, c2) => s + c2.topics.length, 0) + next + 1).catch(() => {});
+      const topico_id = _cachedTopicosDB[next]?.id;
+      if (topico_id) Areas.marcarTopico(topico_id).then(loadProgressGlobal).catch(() => {});
       loadRevState();
     }
   }
@@ -3374,7 +3378,8 @@ let currentRevState = false;
 
 async function toggleRevisao() {
   if (!Auth.isLogado()) return;
-  const topico_id = classes.slice(0, currentClassId).reduce((s, c) => s + c.topics.length, 0) + currentTopicIdx + 1;
+  const topico_id = _cachedTopicosDB[currentTopicIdx]?.id;
+  if (!topico_id) return;
   try {
     const d = await api.post('/areas/?action=toggle_revisao', { topico_id });
     currentRevState = d.revisao;
