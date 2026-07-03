@@ -3,3 +3,5 @@ lex_studio.db
 
 .vercel
 .env*
+node_modules/
+memory/

@@ -316,13 +316,6 @@ async function main() {
   console.log('💾  Inserindo no banco...')
   const total = await inserir(els)
 
-  // Marca mais cobrados (UPDATE extra como fallback)
-  await sql`
-    UPDATE vade_artigos SET mais_cobrado = TRUE
-    WHERE numero ~ '^Art\. [0-9]+'
-      AND regexp_replace(numero, '^Art\. ([0-9]+).*', '\1') = ANY(${[...HOT]})
-  `
-
   const [{ cnt }] = await sql`SELECT COUNT(*) AS cnt FROM vade_artigos`
   const [{ hot }] = await sql`SELECT COUNT(*) AS hot FROM vade_artigos WHERE mais_cobrado = TRUE`
   const [{ partes }] = await sql`SELECT COUNT(*) AS partes FROM vade_partes`
