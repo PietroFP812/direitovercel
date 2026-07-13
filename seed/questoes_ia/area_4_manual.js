@@ -1,0 +1,27 @@
+// Gerado manualmente (por IA, sem API externa) — área 4 (Responsabilidade Civil)
+// Baseado no texto real dos artigos 927-965 do CC, extraído de vade_artigos.
+// REVISAR antes de colar no array "banco" de seed/questoes.js.
+
+[4,'João, por ato ilícito nos termos dos arts. 186 e 187 do CC, causa dano a Maria. Qual a consequência jurídica imediata prevista no art. 927?',
+ 'Art. 927 CC — aquele que, por ato ilícito, causar dano a outrem, fica obrigado a repará-lo. O dever de reparar surge diretamente da prática do ato ilícito que causou o dano, independentemente de qualquer outra condição.','facil',
+ [['A','João só responde civilmente se houver condenação criminal prévia',false],['B','João fica obrigado a reparar o dano causado a Maria',true],['C','João só responde se tiver agido com dolo, nunca com culpa',false],['D','A responsabilidade só existe se Maria mover ação no prazo de 30 dias',false]]],
+
+[4,'Um adolescente de 15 anos causa dano a terceiro em situação na qual seus responsáveis não têm obrigação de indenizar ou não dispõem de meios suficientes para fazê-lo. Segundo o art. 928 do CC:',
+ 'Art. 928 CC — o incapaz responde pelos prejuízos que causar, se as pessoas por ele responsáveis não tiverem obrigação de fazê-lo ou não dispuserem de meios suficientes. É uma responsabilização subsidiária e excepcional do próprio incapaz, quando os responsáveis não puderem arcar com a reparação.','medio',
+ [['A','O incapaz nunca pode ser responsabilizado, sob nenhuma hipótese',false],['B','O incapaz pode responder subsidiariamente pelos prejuízos, nessa hipótese',true],['C','A vítima fica sem qualquer direito à reparação nesse caso',false],['D','Somente o Estado pode ser acionado para reparar o dano',false]]],
+
+[4,'Uma empresa é responsabilizada civilmente pelos atos de um empregado seu, praticados no exercício do trabalho, ainda que fique comprovado que a empresa não agiu com culpa na escolha ou fiscalização do empregado. Essa responsabilização se fundamenta:',
+ 'Art. 933 CC — as pessoas indicadas nos incisos do art. 932 (entre elas o empregador, pelos atos de seus empregados no exercício do trabalho) respondem pelos atos de terceiros ainda que não haja culpa de sua parte. É hipótese de responsabilidade objetiva por fato de terceiro.','dificil',
+ [['A','Na responsabilidade subjetiva, exigindo sempre prova de culpa da empresa',false],['B','Em cláusula contratual específica, sem previsão legal geral',false],['C','Apenas em relações de consumo, não se aplicando ao Código Civil',false],['D','Na responsabilidade objetiva por fato de terceiro, prevista no art. 933 c/c art. 932 do CC',true]]],
+
+[4,'Pedro sofre um acidente causado por Carlos, mas fica demonstrado que Pedro também contribuiu culposamente para o evento danoso. Segundo o art. 945 do CC, como deve o juiz fixar a indenização?',
+ 'Art. 945 CC — se a vítima tiver concorrido culposamente para o evento danoso, a sua indenização será fixada tendo-se em conta a gravidade de sua culpa em confronto com a do autor do dano. É a chamada compensação/concorrência de culpas.','medio',
+ [['A','A indenização deve ser integral, ignorando a culpa da vítima',false],['B','A ação deve ser julgada improcedente sempre que houver culpa concorrente',false],['C','A indenização deve ser proporcional, considerando a gravidade da culpa de cada um',true],['D','A indenização deve ser dividida sempre em partes exatamente iguais',false]]],
+
+[4,'Bruno sofre um acidente causado por Cláudio, ficando demonstrado que Bruno contribuiu com 30% de culpa para o evento e Cláudio com 70%. Bruno ajuíza ação de reparação civil 3 anos e 4 meses após o acidente, sem que tenha ocorrido qualquer causa de suspensão ou interrupção da prescrição nesse período. Sobre o caso, é correto afirmar que:',
+ 'Duas questões distintas incidem no caso. Quanto ao mérito, a culpa concorrente de Bruno (30%) reduziria proporcionalmente a indenização, nos termos do art. 945 CC. Mas, quanto ao prazo, a pretensão de reparação civil por ilícito extracontratual prescreve em 3 anos (art. 206, §3º, V, CC) — e como já se passaram 3 anos e 4 meses sem suspensão ou interrupção, a pretensão de Bruno já está prescrita. A questão de mérito (culpa concorrente) sequer chega a ser discutida, pois a prescrição é preliminar e extingue a pretensão.','dificil',
+ [['A','A indenização será reduzida em 30%, pela culpa concorrente de Bruno, e a ação deve prosseguir normalmente',false],['B','A pretensão de Bruno já está prescrita, pois o prazo de 3 anos para reparação civil já se esgotou',true],['C','Não há prescrição, pois o prazo geral de 10 anos ainda não se completou',false],['D','A ação é imprescritível, por se tratar de reparação de dano à integridade física',false]]],
+
+[4,'Em ação de indenização por dano material decorrente de ato ilícito, qual critério o art. 944 do CC estabelece para a medida da indenização?',
+ 'Art. 944, caput, CC — a indenização mede-se pela extensão do dano. É o princípio da reparação integral: a indenização deve corresponder exatamente à extensão do prejuízo sofrido, nem mais, nem menos (o parágrafo único do mesmo artigo permite redução equitativa em caso de excessiva desproporção entre culpa e dano).','facil',
+ [['A','A extensão do dano efetivamente sofrido pela vítima',true],['B','O grau de dolo ou culpa do causador do dano, exclusivamente',false],['C','A capacidade econômica do causador do dano, exclusivamente',false],['D','Um valor fixo estabelecido em tabela do Conselho Nacional de Justiça',false]]],

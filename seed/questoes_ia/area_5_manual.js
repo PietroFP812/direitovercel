@@ -1,0 +1,32 @@
+// Gerado manualmente (por IA, sem API externa) — área 5 (Direito das Coisas)
+// Baseado no texto real dos artigos 1.196-1.510 do CC, extraído de vade_artigos.
+// REVISAR antes de colar no array "banco" de seed/questoes.js.
+
+[5,'Um possuidor obteve a posse de um imóvel de forma pacífica e às claras, mas, no momento da aquisição, desconhecia que o imóvel havia sido objeto de um vício anterior (por exemplo, aquisição de quem não era o verdadeiro proprietário). Segundo os arts. 1.200 e 1.201 do CC, essa posse é, respectivamente:',
+ 'Arts. 1.200 e 1.201 CC — é justa a posse que não for violenta, clandestina ou precária (critério objetivo, relativo ao modo de aquisição); é de boa-fé a posse quando o possuidor ignora o vício ou obstáculo que impede a aquisição da coisa (critério subjetivo, relativo ao conhecimento do possuidor). São qualificações distintas e cumuláveis.','medio',
+ [['A','Justa e de boa-fé, pois o modo de aquisição foi pacífico e o possuidor ignorava o vício',true],['B','Injusta e de má-fé, pois havia vício na cadeia de aquisição do imóvel',false],['C','Justa, mas necessariamente de má-fé, por existir vício anterior',false],['D','De boa-fé, mas necessariamente injusta, por existir vício anterior',false]]],
+
+[5,'Uma pessoa possui um imóvel rural como se dono fosse, ininterruptamente e sem oposição, por 15 anos, sem possuir qualquer título de aquisição e sem estar de boa-fé. Segundo o art. 1.238 do CC, essa pessoa:',
+ 'Art. 1.238, caput, CC — aquele que, por quinze anos, sem interrupção nem oposição, possuir como seu um imóvel, adquire-lhe a propriedade, independentemente de título e boa-fé. É a usucapião extraordinária, que dispensa justo título e boa-fé, exigindo apenas a posse qualificada pelo tempo.','facil',
+ [['A','Não adquire a propriedade, pois usucapião sempre exige boa-fé',false],['B','Adquire a propriedade por usucapião extraordinária, independentemente de título e boa-fé',true],['C','Adquire apenas a posse, nunca a propriedade, sem registro prévio',false],['D','Precisa aguardar mais 10 anos, totalizando 25 anos de posse',false]]],
+
+[5,'Uma família possui, para sua moradia, área urbana de 200 m², de forma ininterrupta e sem oposição, por 5 anos, não sendo proprietária de qualquer outro imóvel urbano ou rural. Segundo o art. 1.240 do CC, essa família:',
+ 'Art. 1.240 CC — aquele que possuir, como sua, área urbana de até 250 m², por 5 anos ininterruptamente e sem oposição, utilizando-a para moradia própria ou de sua família, adquire-lhe o domínio, desde que não seja proprietário de outro imóvel urbano ou rural. É a usucapião especial urbana (constitucional).','medio',
+ [['A','Não pode usucapir, pois a área urbana máxima permitida é de 150 m²',false],['B','Só pode usucapir após 10 anos de posse, mesmo em área urbana',false],['C','Não pode usucapir, pois usucapião urbana exige sempre justo título registrado',false],['D','Pode adquirir a propriedade por usucapião especial urbana, preenchidos os requisitos do art. 1.240',true]]],
+
+[5,'Uma pessoa possui um imóvel de forma contínua e incontestada, com justo título e boa-fé, por 10 anos. Segundo o art. 1.242 do CC, essa modalidade de aquisição da propriedade é conhecida como:',
+ 'Art. 1.242, caput, CC — adquire também a propriedade do imóvel aquele que, contínua e incontestadamente, com justo título e boa-fé, o possuir por dez anos. É a usucapião ordinária, que exige justo título e boa-fé (diferentemente da extraordinária do art. 1.238, que os dispensa).','facil',
+ [['A','Usucapião extraordinária',false],['B','Desapropriação indireta',false],['C','Usucapião ordinária',true],['D','Usucapião especial rural',false]]],
+
+[5,'Celebrado contrato de compra e venda de imóvel, a propriedade transfere-se entre vivos para o comprador em qual momento, segundo o art. 1.245 do CC?',
+ 'Art. 1.245, caput, CC — transfere-se entre vivos a propriedade mediante o registro do título translativo no Registro de Imóveis. No sistema brasileiro, o mero contrato gera apenas direito obrigacional; a propriedade imóvel só se transfere com o registro (diferentemente dos bens móveis, transferidos pela tradição).','dificil',
+ [['A','No momento da assinatura do contrato de compra e venda',false],['B','No momento do pagamento integral do preço',false],['C','Com o registro do título translativo no Registro de Imóveis',true],['D','Com a simples posse direta do imóvel pelo comprador',false]]],
+
+[5,'Um imóvel é dado em hipoteca para garantir dívida parcelada em 12 prestações. Após o pagamento de 6 das 12 prestações, o devedor pretende liberar metade da garantia hipotecária, proporcionalmente ao valor já pago. Segundo o art. 1.421 do CC, isso é possível, salvo disposição expressa em contrário?',
+ 'Art. 1.421 CC — o pagamento de uma ou mais prestações da dívida não importa exoneração correspondente da garantia, ainda que esta compreenda vários bens, salvo disposição expressa no título ou na quitação. É o princípio da indivisibilidade da garantia real.','dificil',
+ [['A','Sim, a garantia se libera automaticamente na proporção do valor pago',false],['B','Não, pois a garantia real é indivisível, salvo disposição expressa em contrário',true],['C','Sim, mas apenas mediante autorização do Registro de Imóveis',false],['D','Não, a garantia hipotecária nunca pode ser objeto de disposição em contrário',false]]],
+
+[5,'Uma pessoa ocupa um terreno alheio por 20 anos ininterruptos e sem oposição, sempre plenamente ciente, durante todo esse período, de que o imóvel pertencia a outra pessoa (ou seja, de má-fé, sem qualquer título). Ela pretende agora requerer a usucapião. Considerando que a usucapião ordinária (art. 1.242 CC) exige justo título e boa-fé, essa pessoa pode adquirir a propriedade por usucapião?',
+ 'Arts. 1.238 e 1.242 CC — a usucapião ordinária (art. 1.242) exige justo título e boa-fé, requisitos que faltam no caso. Mas a usucapião extraordinária (art. 1.238) independe de título e boa-fé, bastando a posse mansa, pacífica e ininterrupta por 15 anos. Como os 20 anos de posse superam os 15 anos exigidos, a pessoa adquire a propriedade por usucapião extraordinária, ainda que estivesse de má-fé durante toda a posse.','dificil',
+ [['A','Não, pois toda modalidade de usucapião no CC exige boa-fé do possuidor',false],['B','Sim, por usucapião extraordinária, que dispensa título e boa-fé, bastando os 15 anos de posse',true],['C','Não, a má-fé durante a posse impede qualquer modalidade de usucapião',false],['D','Sim, mas apenas por usucapião ordinária, computando-se o dobro do prazo por má-fé',false]]],
+

@@ -155,8 +155,9 @@ const HOT = new Set([
 ])
 
 function isMaisCobrado(numero) {
-  const m = numero.match(/Art\.\s*(\d+)/)
-  return m ? HOT.has(m[1]) : false
+  const m = numero.match(/Art\.\s*(\d+(?:\.\d+)?)/)
+  if (!m) return false
+  return HOT.has(m[1].replace(/\./g, ''))
 }
 
 // ── Inserção no banco ─────────────────────────────────────────────────────────
@@ -211,7 +212,7 @@ async function inserir(els) {
         `
         capId = id; artOrd = 0
       }
-      const m = valor.match(/^(Art\.\s*\d+[º°oa]?)\s*([\s\S]*)/u)
+      const m = valor.match(/^(Art\.\s*\d+(?:\.\d+)?(?:-[A-Z])?)[\s.ºoa°]*([\s\S]*)/u)
       if (m) {
         const numero = normalizeNum(m[1].trim())
         const caput  = m[2].trim()

@@ -1,0 +1,32 @@
+// Gerado manualmente (por IA, sem API externa) — área 7 (Direito das Sucessões)
+// Baseado no texto real dos artigos 1.784-2.027 do CC, extraído de vade_artigos.
+// REVISAR antes de colar no array "banco" de seed/questoes.js.
+
+[7,'No exato momento da morte de uma pessoa, sem qualquer formalidade ou necessidade de aceitação expressa, a herança já se transmite aos herdeiros legítimos e testamentários. Esse fenômeno é conhecido como princípio da saisine, previsto no:',
+ 'Art. 1.784 CC — aberta a sucessão, a herança transmite-se, desde logo, aos herdeiros legítimos e testamentários. É o princípio da saisine (droit de saisine): a transmissão da herança ocorre automaticamente com a morte, independentemente de qualquer ato dos herdeiros.','facil',
+ [['A','Princípio da saisine, previsto no art. 1.784 do CC',true],['B','Princípio da colação, previsto no art. 2.002 do CC',false],['C','Princípio da legítima, previsto no art. 1.846 do CC',false],['D','Princípio da comoriência, previsto no art. 8º do CC',false]]],
+
+[7,'Descendentes, ascendentes e o cônjuge sobrevivente são, segundo o art. 1.845 do CC, considerados herdeiros necessários. A esses herdeiros pertence, de pleno direito, qual fração dos bens da herança (a legítima), segundo o art. 1.846?',
+ 'Arts. 1.845 e 1.846 CC — são herdeiros necessários os descendentes, os ascendentes e o cônjuge; pertence a eles, de pleno direito, a metade dos bens da herança, constituindo a legítima. A outra metade (porção disponível) pode ser livremente destinada pelo testador.','medio',
+ [['A','Um terço dos bens da herança',false],['B','A metade dos bens da herança',true],['C','Dois terços dos bens da herança',false],['D','A totalidade dos bens da herança',false]]],
+
+[7,'Um testador possui herdeiros necessários (filhos vivos). Ele pretende, por testamento, destinar a totalidade de seu patrimônio a uma instituição de caridade, nada deixando aos filhos. Segundo o art. 1.789 do CC, isso é juridicamente possível?',
+ 'Art. 1.789 CC — havendo herdeiros necessários, o testador só poderá dispor da metade da herança (a legítima, reservada por lei aos herdeiros necessários, é intangível pela vontade do testador). A doação da totalidade do patrimônio violaria a legítima dos filhos.','medio',
+ [['A','Sim, o testador pode dispor livremente da totalidade de seus bens',false],['B','Sim, desde que os filhos sejam maiores de idade e capazes',false],['C','Não, testamentos em favor de instituições de caridade são sempre nulos',false],['D','Não, havendo herdeiros necessários, o testador só pode dispor da metade disponível da herança',true]]],
+
+[7,'Falecido o marido, a esposa sobrevivente, qualquer que seja o regime de bens do casamento, tem assegurado, sem prejuízo de sua participação na herança, qual direito relativo ao imóvel que servia de residência da família, segundo o art. 1.831 do CC?',
+ 'Art. 1.831 CC — ao cônjuge sobrevivente, qualquer que seja o regime de bens, será assegurado, sem prejuízo da participação que lhe caiba na herança, o direito real de habitação relativamente ao imóvel destinado à residência da família, desde que seja o único imóvel dessa natureza a inventariar.','dificil',
+ [['A','O direito de propriedade exclusiva sobre o imóvel, excluindo os demais herdeiros',false],['B','Nenhum direito adicional sobre o imóvel, além da participação na herança',false],['C','O direito real de habitação sobre o imóvel de residência da família',true],['D','O direito de vender o imóvel e reverter o produto exclusivamente para si',false]]],
+
+[7,'Um testador, anos após lavrar seu testamento, decide alterar completamente suas disposições, revogando o testamento anterior. Segundo o art. 1.858 do CC, essa alteração é juridicamente possível a qualquer momento?',
+ 'Art. 1.858 CC — o testamento é ato personalíssimo, podendo ser mudado a qualquer tempo. A revogabilidade é característica essencial do testamento: ninguém pode se vincular de forma irrevogável às disposições de última vontade enquanto vivo.','facil',
+ [['A','Sim, o testamento pode ser mudado a qualquer tempo, por ser ato personalíssimo e revogável',true],['B','Não, o testamento só pode ser alterado uma única vez na vida do testador',false],['C','Não, uma vez lavrado, o testamento é irrevogável',false],['D','Sim, mas apenas mediante autorização judicial prévia',false]]],
+
+[7,'Uma mulher grávida falece antes do nascimento de seu filho. Segundo o art. 1.798 do CC, o nascituro (já concebido, mas ainda não nascido) tem legitimação para suceder nessa sucessão?',
+ 'Art. 1.798 CC — legitimam-se a suceder as pessoas nascidas ou já concebidas no momento da abertura da sucessão. O nascituro, por já estar concebido ao tempo da morte, tem legitimação para suceder (efetivando-se a sucessão se nascer com vida).','medio',
+ [['A','Não, pois o nascituro não é considerado pessoa para nenhum efeito',false],['B','Sim, mas apenas se a mãe tivesse deixado testamento expresso nesse sentido',false],['C','Não, a legitimação para suceder exige nascimento com vida antes da abertura da sucessão',false],['D','Sim, pois o nascituro já concebido ao tempo da abertura da sucessão tem legitimação para suceder',true]]],
+
+[7,'Um casal era casado sob o regime de separação total de bens. O marido falece, deixando como único bem residencial do espólio o apartamento onde a família sempre viveu. Os filhos do casal pretendem excluir a viúva do direito de continuar morando no imóvel, sob o argumento de que, tendo o casamento sido celebrado sob separação de bens, ela não teria qualquer direito sobre bens do marido. Segundo o art. 1.831 do CC, esse argumento dos filhos procede?',
+ 'Art. 1.831 CC — ao cônjuge sobrevivente, qualquer que seja o regime de bens, será assegurado, sem prejuízo da participação que lhe caiba na herança, o direito real de habitação relativamente ao imóvel destinado à residência da família, desde que seja o único dessa natureza a inventariar. O direito real de habitação independe do regime de bens do casamento — inclusive na separação total, a viúva tem esse direito.','dificil',
+ [['A','Procede, pois no regime de separação de bens o cônjuge sobrevivente não tem direito real de habitação',false],['B','Não procede, pois o direito real de habitação é assegurado qualquer que seja o regime de bens do casamento',true],['C','Procede, mas apenas se o casamento tivesse durado menos de 10 anos',false],['D','Não procede, mas somente se a viúva for economicamente hipossuficiente',false]]],
+
