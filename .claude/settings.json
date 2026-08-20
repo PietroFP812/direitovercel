@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e ' *)",
+      "Bash(node \"C:\\\\Users\\\\Pietro\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-Pietro-Desktop-2026-1-TCC-lex-studio\\\\67aaca28-947d-4cc2-a9ea-6bca4805774c\\\\scratchpad\\\\check_existing.js\")"
+    ]
+  }
+}
