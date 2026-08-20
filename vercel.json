@@ -4,7 +4,19 @@
       "maxDuration": 30
     }
   },
+  "redirects": [
+    { "source": "/app/home.html",      "destination": "/home",      "permanent": true },
+    { "source": "/app/estudar.html",   "destination": "/estudar",   "permanent": true },
+    { "source": "/app/simulados.html", "destination": "/simulados", "permanent": true },
+    { "source": "/app/vade.html",      "destination": "/vade",      "permanent": true },
+    { "source": "/app/checkout.html",  "destination": "/checkout",  "permanent": true }
+  ],
   "rewrites": [
+    { "source": "/home",      "destination": "/app/home.html" },
+    { "source": "/estudar",   "destination": "/app/estudar.html" },
+    { "source": "/simulados", "destination": "/app/simulados.html" },
+    { "source": "/vade",      "destination": "/app/vade.html" },
+    { "source": "/checkout",  "destination": "/app/checkout.html" },
     { "source": "/api/auth/oauth", "destination": "/api/auth/oauth.js" }
   ],
   "headers": [

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<script>if(!localStorage.getItem('lex_token')){window.location.replace('../index.html');}</script>
+<script>if(!localStorage.getItem('lex_token')){window.location.replace('/');}</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Estudar — Lex Studio</title>
@@ -1525,19 +1525,19 @@
     </svg>
   </div>
   <nav class="sidebar-nav">
-    <a class="nav-btn" href="home.html">
+    <a class="nav-btn" href="/home">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       <span class="nav-tooltip">Início</span>
     </a>
-    <a class="nav-btn active" href="estudar.html">
+    <a class="nav-btn active" href="/estudar">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
       <span class="nav-tooltip">Estudar</span>
     </a>
-    <a class="nav-btn" href="simulados.html">
+    <a class="nav-btn" href="/simulados">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       <span class="nav-tooltip">Simulados</span>
     </a>
-    <a class="nav-btn" href="vade.html">
+    <a class="nav-btn" href="/vade">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
       <span class="nav-tooltip" data-alt="Código Civil">Vade Mecum</span>
     </a>
@@ -1588,7 +1588,7 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--accent)"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="3"/></svg>
           <h3>Praticar questões</h3>
         </div>
-        <a href="simulados.html" class="btn-ir-simulados">
+        <a href="/simulados" class="btn-ir-simulados">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           Ir para Simulados
         </a>
@@ -1868,7 +1868,7 @@ const Auth = {
     try { await api.post('/auth/?action=logout'); } catch (_) {}
     localStorage.removeItem('lex_token');
     localStorage.removeItem('lex_user');
-    window.location.href = '../index.html';
+    window.location.href = '/';
   },
 
   async me() {
@@ -3497,7 +3497,7 @@ function lexLogout() {
     try { fetch('/api/auth/?action=logout', { method: 'POST', headers: { 'X-Session-Token': localStorage.getItem('lex_token') || '' } }); } catch(_) {}
     localStorage.removeItem('lex_user');
     localStorage.removeItem('lex_token');
-    window.location.href = '../index.html';
+    window.location.href = '/';
   }
 }
 

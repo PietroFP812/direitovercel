@@ -134,7 +134,7 @@ module.exports = async function handler(req, res) {
     await sql`UPDATE usuarios SET ultimo_login = NOW() WHERE id = ${userId}`
 
     res.setHeader('Set-Cookie', [clearState, makeSessionCookie(token)])
-    res.writeHead(302, { Location: `${APP_URL()}/app/home.html?oauth=1` })
+    res.writeHead(302, { Location: `${APP_URL()}/home?oauth=1` })
     return res.end()
   }
 

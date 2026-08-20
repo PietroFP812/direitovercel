@@ -1107,7 +1107,7 @@ footer {
       <div class="success-icon">⚖️</div>
       <h3>Bem-vindo ao Lex Studio!</h3>
       <p>Sua conta foi criada. Redirecionando para a plataforma...</p>
-      <button class="login-submit" onclick="window.location.href='app/home.html'" style="max-width:200px;margin:0 auto">Acessar agora →</button>
+      <button class="login-submit" onclick="window.location.href='/home'" style="max-width:200px;margin:0 auto">Acessar agora →</button>
     </div>
 
   </div>
@@ -1117,7 +1117,7 @@ footer {
 function assinarPlano(plano) {
   const token = localStorage.getItem('lex_token');
   if (token) {
-    window.location.href = 'app/checkout.html?plano=' + plano;
+    window.location.href = '/checkout?plano=' + plano;
   } else {
     sessionStorage.setItem('checkout_intent', plano);
     openLogin('register');
@@ -1192,7 +1192,7 @@ async function handleSubmit(type) {
     s.classList.add('show');
 
     const intent = sessionStorage.getItem('checkout_intent');
-    const destino = intent ? `app/checkout.html?plano=${intent}` : 'app/home.html';
+    const destino = intent ? `/checkout?plano=${intent}` : '/home';
     if (intent) sessionStorage.removeItem('checkout_intent');
     setTimeout(() => { window.location.href = destino; }, 1500);
 
