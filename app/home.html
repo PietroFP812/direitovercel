@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<script>if(!localStorage.getItem('lex_token')){window.location.replace('../index.html');}</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Início — Lex Studio</title>
@@ -1138,6 +1139,7 @@ const Auth = {
   async me() {
     const data = await api.get('/auth/?action=me');
     localStorage.setItem('lex_user', JSON.stringify(data.usuario));
+    if (data.token) localStorage.setItem('lex_token', data.token);
     return data.usuario;
   },
 
@@ -1341,19 +1343,11 @@ loadRevisao();
 // ─── OAUTH CALLBACK ───────────────────────────────────────────────────────────
 (function handleOAuthCallback() {
   const p = new URLSearchParams(window.location.search);
-  const oauthPayload = p.get('oauth');
-  if (!oauthPayload) return;
-  try {
-    const data = JSON.parse(atob(decodeURIComponent(oauthPayload)));
-    if (data.token && data.usuario) {
-      localStorage.setItem('lex_token', data.token);
-      localStorage.setItem('lex_user',  JSON.stringify(data.usuario));
-      lexInitUser();
-      initDashboard();
-      loadRevisao();
-    }
-  } catch (_) {}
+  if (!p.get('oauth')) return;
   history.replaceState({}, '', window.location.pathname);
+  Auth.me().then(user => {
+    if (user) { lexInitUser(); initDashboard(); loadRevisao(); }
+  }).catch(() => {});
 })();
 
 // ─── SETTINGS ────────────────────────────────────────────────────────────────
@@ -1417,7 +1411,7 @@ async function salvarSenha() {
   msg.className = 'smsg'; msg.textContent = '';
   if (!atual || !nova) { msg.className = 'smsg err'; msg.textContent = 'Preencha todos os campos.'; return; }
   if (nova !== conf)   { msg.className = 'smsg err'; msg.textContent = 'As senhas não coincidem.'; return; }
-  if (nova.length < 6) { msg.className = 'smsg err'; msg.textContent = 'Mínimo 6 caracteres.'; return; }
+  if (nova.length < 8) { msg.className = 'smsg err'; msg.textContent = 'Mínimo 8 caracteres.'; return; }
   btn.disabled = true;
   try {
     await api.put('/auth/?action=alterar_senha', { senha_atual: atual, senha_nova: nova });

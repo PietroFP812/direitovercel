@@ -133,11 +133,8 @@ module.exports = async function handler(req, res) {
     await sql`INSERT INTO sessoes (id, usuario_id, ip, user_agent, expira_em) VALUES (${token}, ${userId}, ${ip}, ${ua}, ${expira})`
     await sql`UPDATE usuarios SET ultimo_login = NOW() WHERE id = ${userId}`
 
-    const [userData] = await sql`SELECT id, nome, sobrenome, email, plano, tema FROM usuarios WHERE id = ${userId}`
-    const payload = Buffer.from(JSON.stringify({ token, usuario: userData })).toString('base64')
-
     res.setHeader('Set-Cookie', [clearState, makeSessionCookie(token)])
-    res.writeHead(302, { Location: `${APP_URL()}/app/home.html?oauth=${encodeURIComponent(payload)}` })
+    res.writeHead(302, { Location: `${APP_URL()}/app/home.html?oauth=1` })
     return res.end()
   }
 

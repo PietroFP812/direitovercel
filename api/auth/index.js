@@ -69,7 +69,7 @@ module.exports = async function handler(req, res) {
 
     if (!nome || !email || !senha) return respondError(res, 'Nome, e-mail e senha são obrigatórios.')
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return respondError(res, 'E-mail inválido.')
-    if (senha.length < 6) return respondError(res, 'A senha deve ter no mínimo 6 caracteres.')
+    if (senha.length < 8) return respondError(res, 'A senha deve ter no mínimo 8 caracteres.')
 
     const ip = ((req.headers['x-forwarded-for'] || '') + '').split(',')[0].trim() || '0.0.0.0'
 
@@ -118,9 +118,10 @@ module.exports = async function handler(req, res) {
 
   // ── GET me ───────────────────────────────────────────────────────────────────
   if (req.method === 'GET' && action === 'me') {
+    const token = req.headers['x-session-token'] || parseCookies(req.headers.cookie || '').lex_session || ''
     const user = await getUsuarioAutenticado(req, res, sql)
     if (!user) return
-    return respondOk(res, { usuario: user })
+    return respondOk(res, { usuario: user, token })
   }
 
   // ── PUT tema ─────────────────────────────────────────────────────────────────
@@ -166,7 +167,7 @@ module.exports = async function handler(req, res) {
     const senha_nova = body.senha_nova || ''
 
     if (!senha_atual || !senha_nova) return respondError(res, 'Senha atual e nova são obrigatórias.')
-    if (senha_nova.length < 6) return respondError(res, 'A nova senha deve ter no mínimo 6 caracteres.')
+    if (senha_nova.length < 8) return respondError(res, 'A nova senha deve ter no mínimo 8 caracteres.')
 
     const [row] = await sql`SELECT senha_hash, provider FROM usuarios WHERE id = ${user.id}`
     if (row?.provider !== 'local') return respondError(res, 'Conta OAuth — senha gerenciada pelo provedor.')
@@ -186,12 +187,19 @@ module.exports = async function handler(req, res) {
     const email = (body.email || '').trim()
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return respondError(res, 'E-mail inválido.')
 
+    const ip = ((req.headers['x-forwarded-for'] || '') + '').split(',')[0].trim() || '0.0.0.0'
+    const [{ count: resetCount }] = await sql`
+      SELECT COUNT(*)::int AS count FROM tentativas_login
+      WHERE ip = ${ip} AND email = '__reset__' AND criado_em > NOW() - INTERVAL '1 hour'
+    `
+    if (resetCount >= 3) return respondError(res, 'Muitas solicitações. Aguarde 1 hora.', 429)
+    await sql`INSERT INTO tentativas_login (ip, email) VALUES (${ip}, '__reset__')`
+
     const users = await sql`SELECT id, nome, provider FROM usuarios WHERE email = ${email} AND ativo = TRUE`
     const user = users[0]
 
-    if (!user || user.provider !== 'local') {
-      return respondOk(res, { dev_link: null }, 'Se o e-mail existir, você receberá um link em breve.')
-    }
+    const GENERIC = 'Se o e-mail existir na base, você receberá um link em breve.'
+    if (!user || user.provider !== 'local') return respondOk(res, {}, GENERIC)
 
     const token = gerarToken(24)
     const expira = new Date(Date.now() + 60 * 60 * 1000)
@@ -199,10 +207,9 @@ module.exports = async function handler(req, res) {
 
     const appUrl = process.env.APP_URL || `https://${req.headers.host}`
     const resetLink = `${appUrl}/reset_senha.html?token=${token}`
-    const enviado = await emailReset(email, user.nome, resetLink)
+    await emailReset(email, user.nome, resetLink)
 
-    if (enviado) return respondOk(res, {}, 'Se o e-mail existir na base, você receberá o link em breve.')
-    return respondOk(res, { dev_link: resetLink }, 'Link gerado (configure SMTP no Vercel para enviar e-mail).')
+    return respondOk(res, {}, GENERIC)
   }
 
   // ── POST resetar_senha ───────────────────────────────────────────────────────
@@ -212,7 +219,7 @@ module.exports = async function handler(req, res) {
     const senha = body.senha || ''
 
     if (!token) return respondError(res, 'Token inválido.')
-    if (senha.length < 6) return respondError(res, 'A senha deve ter no mínimo 6 caracteres.')
+    if (senha.length < 8) return respondError(res, 'A senha deve ter no mínimo 8 caracteres.')
 
     const users = await sql`
       SELECT id FROM usuarios

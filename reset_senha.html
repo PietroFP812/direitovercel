@@ -110,8 +110,8 @@ async function handleReset() {
   errEl.style.display = 'none';
   okEl.style.display  = 'none';
 
-  if (!senha || senha.length < 6) {
-    errEl.textContent = 'A senha deve ter no mínimo 6 caracteres.';
+  if (!senha || senha.length < 8) {
+    errEl.textContent = 'A senha deve ter no mínimo 8 caracteres.';
     errEl.style.display = 'block'; return;
   }
   if (senha !== senha2) {
