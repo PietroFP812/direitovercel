@@ -1,7 +1,26 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<script>if(!localStorage.getItem('lex_token')){window.location.replace('/');}</script>
+<script>
+(function(){
+  if(localStorage.getItem('lex_token')) return;
+  var p=new URLSearchParams(window.location.search);
+  if(p.get('oauth')==='1'){
+    document.documentElement.style.visibility='hidden';
+    fetch('/api/auth/?action=me')
+      .then(function(r){return r.ok?r.json():Promise.reject();})
+      .then(function(d){
+        localStorage.setItem('lex_token',d.token);
+        localStorage.setItem('lex_user',JSON.stringify(d.usuario));
+        history.replaceState({},'','/home');
+        document.documentElement.style.visibility='';
+      })
+      .catch(function(){window.location.replace('/');});
+  } else {
+    window.location.replace('/');
+  }
+})();
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Início — Lex Studio</title>
